@@ -1,4 +1,4 @@
-from phrase import Phrase
+from tc_xml_python.models.phrase import Phrase
 
 
 class Text:

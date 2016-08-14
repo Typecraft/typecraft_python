@@ -1,4 +1,5 @@
-from word import Word
+from tc_xml_python.models.word import Word
+
 
 class Phrase:
     """

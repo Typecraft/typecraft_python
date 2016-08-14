@@ -1,4 +1,4 @@
-from morpheme import Morpheme
+from tc_xml_python.models.morpheme import Morpheme
 
 
 class Word:
