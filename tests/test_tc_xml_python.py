@@ -23,8 +23,6 @@ class TestTc_xml_python(object):
     def setup_class(cls):
         pass
 
-    def test_something(self):
-        pass
     def test_command_line_interface(self):
         runner = CliRunner()
         result = runner.invoke(cli.main)
