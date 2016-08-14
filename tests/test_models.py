@@ -1,5 +1,6 @@
 from tc_xml_python.models import *
 
+
 class TestModels(object):
     @classmethod
     def setup_class(cls):
@@ -52,6 +53,3 @@ class TestModels(object):
 
     def test_add_morpheme_to_word(self):
         pass
-
-
-

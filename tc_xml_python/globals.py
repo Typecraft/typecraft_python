@@ -1,0 +1,3 @@
+
+STRICT_MODE = True
+

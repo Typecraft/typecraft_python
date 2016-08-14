@@ -1,3 +1,5 @@
+from morpheme import Morpheme
+
 
 class Word:
     """
@@ -16,3 +18,8 @@ class Word:
         self.stem_morpheme = None
         self.morphemes = []
 
+    def add_morpheme(self, morpheme):
+        if not (isinstance(morpheme, Morpheme)):
+            raise Exception("Wrong argument to add_morpheme, expected Morpheme instance")
+
+        self.morphemes.append(morpheme)
