@@ -21,11 +21,11 @@ test_requirements = [
 setup(
     name='tc_xml_python',
     version='0.1.0',
-    description="Simple implementation of the Typecraft XML format in Python.",
+    description="Lightweight implementation of the Typecraft XML format in python.",
     long_description=readme + '\n\n' + history,
     author="Tormod Haugland",
     author_email='tormod.haugland@gmail.com',
-    url='https://github.com/tOgg1/tc_xml_python',
+    url='https://github.com/Typecraft/tc_xml_python',
     packages=[
         'tc_xml_python',
     ],
