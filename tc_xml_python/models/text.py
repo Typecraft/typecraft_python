@@ -17,4 +17,3 @@ class Text:
         self.delta = {}
         self.metadata = {}
         self.phrases = []
-
