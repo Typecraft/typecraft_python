@@ -5,4 +5,4 @@ __email__ = 'tormod.haugland@gmail.com'
 __version__ = '0.1.0'
 
 
-__all__ = ['globals']
+__all__ = ['globals', 'models', 'parsing', 'exceptions']
