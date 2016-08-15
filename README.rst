@@ -24,11 +24,22 @@ Lightweight implementation of the Typecraft XML format in python.
 * Free software: MIT license
 * Documentation: https://tc-xml-python.readthedocs.io.
 
+Installation
+--------
+    
+    pip install tc_xml_python
+
 
 Features
 --------
 
-* TODO
+This repository contains a lightweight python implementation of the Typecraft IGT-model, bundled with a simple parser.
+
+Usage
+-------
+
+Currently, the project can only be used as a library, and does nothing as a standalone.
+
 
 Credits
 ---------
