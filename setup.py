@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -26,9 +26,7 @@ setup(
     author="Tormod Haugland",
     author_email='tormod.haugland@gmail.com',
     url='https://github.com/Typecraft/tc_xml_python',
-    packages=[
-        'tc_xml_python',
-    ],
+    packages=find_packages(),
     package_dir={'tc_xml_python':
                  'tc_xml_python'},
     entry_points={
