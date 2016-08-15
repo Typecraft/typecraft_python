@@ -10,23 +10,16 @@ from tc_xml_python.globals import *
 """
 The typecraft namespace
 """
-typecraft_ns = 'http://typecraft.org/typecraft'
-
-"""
-Namespace dictionary we use for parsing
-"""
-ns = {
-    'tc': typecraft_ns
-}
+ns = '{http://typecraft.org/typecraft}'
 
 """
 Tag-strings that define what the expected element-tags of the xml-files are.
 """
-tag_typecraft = '{' + typecraft_ns + '}typecraft'
-tag_text = '{' + typecraft_ns + '}text'
-tag_phrase = '{' + typecraft_ns + '}phrase'
-tag_word = '{' + typecraft_ns + '}word'
-tag_morpheme = '{' + typecraft_ns + '}morpheme'
+tag_typecraft = ns + 'typecraft'
+tag_text = ns + 'text'
+tag_phrase = ns + 'phrase'
+tag_word = ns + 'word'
+tag_morpheme = ns + 'morpheme'
 
 
 class _ParserHelper:
@@ -34,6 +27,13 @@ class _ParserHelper:
     This class contains static methods that assist us in the parsing process, and
     de-clutters the primary Parser-class.
     """
+
+    def __init__(self):
+        """
+        Empty constructor
+        """
+        pass
+
 
     @staticmethod
     def check_text_for_conformity(text_root):
@@ -56,13 +56,13 @@ class _ParserHelper:
         if not STRICT_MODE:
             return
 
-        if text_root.find('tc:title', ns) is None:
+        if text_root.find(ns + 'title') is None:
             raise TypecraftParseException("Element  " + tag_text + " is missing field 'title'")
 
-        if text_root.find('tc:titleTranslation', ns) is None:
+        if text_root.find(ns + 'titleTranslation') is None:
             raise TypecraftParseException("Element " + tag_text + " is missing field 'titleTranslation'")
 
-        if text_root.find('tc:extraMetadata', ns) is None:
+        if text_root.find(ns + 'extraMetadata') is None:
             raise TypecraftParseException("Element " + tag_text + " is missing field 'extraMetadata'")
 
         return
@@ -84,7 +84,7 @@ class _ParserHelper:
         if not STRICT_MODE:
             return
 
-        if phrase_root.find('tc:original', ns) is None:
+        if phrase_root.find(ns + 'original') is None:
             raise TypecraftParseException("Element " + tag_phrase + " is missing field 'original'")
 
         return
@@ -147,15 +147,15 @@ class _ParserHelper:
         :return:
         """
 
-        title = text_root.find('tc:title', ns).text
-        title_translation = text_root.find('tc:titleTranslation', ns).text
+        title = text_root.find(ns + 'title').text
+        title_translation = text_root.find(ns + 'titleTranslation').text
 
         text.title = title
         text.title_translation = title_translation
 
-        metadata_tree = text_root.find('tc:extraMetadata', ns)
+        metadata_tree = text_root.find(ns + 'extraMetadata')
 
-        for metadata in metadata_tree.findall('tc:metadata', ns):
+        for metadata in metadata_tree.findall(ns + 'metadata'):
             key = metadata.attrib['name']
             value = metadata.text
 
@@ -173,8 +173,8 @@ class _ParserHelper:
         :return:
         """
 
-        body = text_root.find('tc:body', ns)
-        delta = text_root.find('tc:delta', ns)
+        body = text_root.find(ns + 'body')
+        delta = text_root.find(ns + 'delta')
         id = text_root.attrib.get('tc:id')
         lang = text_root.attrib.get('tc:lang')
 
@@ -203,7 +203,7 @@ class _ParserHelper:
         :return:
         """
 
-        for phrase in text_root.findall('tc:phrase', ns):
+        for phrase in text_root.findall(ns + 'phrase'):
             text.add_phrase(Parser.convert_etree_to_phrase(phrase))
 
         return
@@ -217,7 +217,7 @@ class _ParserHelper:
         :param phrase_root: An ElementTree representation of a Phrase
         :return:
         """
-        original = phrase_root.find('tc:original', ns).text
+        original = phrase_root.find(ns + 'original').text
 
         phrase.phrase = original
         return
@@ -234,8 +234,8 @@ class _ParserHelper:
 
         id = phrase_root.attrib.get('id')
         validity = phrase_root.attrib.get('valid')
-        translation_tree = phrase_root.find('tc:translation', ns)
-        globaltags_tree = phrase_root.find('tc:globaltags', ns)
+        translation_tree = phrase_root.find(ns + 'translation')
+        globaltags_tree = phrase_root.find(ns + 'globaltags')
 
         if id is not None:
             phrase.id = id
@@ -261,7 +261,7 @@ class _ParserHelper:
         :return:
         """
 
-        for word in phrase_root.findall('tc:word', ns):
+        for word in phrase_root.findall(ns + 'word'):
             phrase.add_word(Parser.convert_etree_to_word(word))
 
         return
@@ -293,7 +293,7 @@ class _ParserHelper:
 
         id = word_root.attrib.get('id')
         head = word_root.attrib.get('head')
-        pos_tree = word_root.find('tc:pos', ns)
+        pos_tree = word_root.find(ns + 'pos')
 
         if id is not None:
             word.id = id
@@ -315,7 +315,7 @@ class _ParserHelper:
         :param word_root:
         :return:
         """
-        for morpheme in word_root.findall('tc:morpheme', ns):
+        for morpheme in word_root.findall(ns + 'morpheme'):
             word.add_morpheme(Parser.convert_etree_to_morpheme(morpheme))
 
         return
@@ -346,7 +346,7 @@ class _ParserHelper:
         baseform = morpheme_root.attrib.get('baseform')
         meaning = morpheme_root.attrib.get('meaning')
 
-        gloss_tree = morpheme_root.findall('tc:gloss', ns)
+        gloss_tree = morpheme_root.findall(ns + 'gloss')
 
         if baseform is not None:
             morpheme.baseform = baseform
