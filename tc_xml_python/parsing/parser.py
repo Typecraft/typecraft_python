@@ -1,10 +1,6 @@
 import xml.etree.ElementTree as ElementTree
 from tc_xml_python.exceptions.parsing import TypecraftParseException
-from tc_xml_python.models.text import Text
-from tc_xml_python.models.phrase import Phrase
-from tc_xml_python.models.word import Word
-from tc_xml_python.models.morpheme import Morpheme
-
+from tc_xml_python.models import Text, Phrase, Word, Morpheme
 from tc_xml_python.globals import *
 
 """
