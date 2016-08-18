@@ -1,5 +1,4 @@
-from tc_xml_python.models import *
-
+from tc_xml_python.models import Text, Phrase, Word, Morpheme
 
 class TestModels(object):
     @classmethod
@@ -7,13 +6,13 @@ class TestModels(object):
         pass
 
     def test_models_exist(self):
-        assert text.Text is not None
-        assert phrase.Phrase is not None
-        assert word.Word is not None
-        assert morpheme.Morpheme is not None
+        assert Text is not None
+        assert Phrase is not None
+        assert Word is not None
+        assert Morpheme is not None
 
     def test_init_text(self):
-        my_text = text.Text()
+        my_text = Text()
 
         assert my_text is not None
         assert my_text.title is ""
@@ -26,7 +25,7 @@ class TestModels(object):
         assert my_text.phrases is not None
 
     def test_init_phrase(self):
-        my_phrase = phrase.Phrase()
+        my_phrase = Phrase()
 
         assert my_phrase is not None
 

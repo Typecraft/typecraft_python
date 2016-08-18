@@ -1,7 +1,7 @@
 import pytest
 import os
 from tc_xml_python.parsing.parser import Parser
-from tc_xml_python.models.text import Text
+from tc_xml_python.models import Text
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
