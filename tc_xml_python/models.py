@@ -177,6 +177,12 @@ class Morpheme:
     def add_gloss(self, gloss):
         self.glosses.append(gloss)
 
+    def get_glosses_concatenated(self, sort=False):
+        if sort:
+            return ".".join(sorted(self.glosses))
+        else:
+            return ".".join(self.glosses)
+
     def to_dict(self):
         return {
             'morpheme': self.morpheme,

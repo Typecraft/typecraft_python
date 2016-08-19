@@ -131,3 +131,12 @@ class TestModels(object):
         for morph in word:
             assert morph in morphs
 
+    def test_get_glosses_concatenated(self):
+        morpheme = Morpheme()
+
+        morpheme.add_gloss("PURP")
+        morpheme.add_gloss("ADJ>ADV")
+
+        assert morpheme.get_glosses_concatenated() == "PURP.ADJ>ADV"
+        assert morpheme.get_glosses_concatenated(sort=True) == "ADJ>ADV.PURP"
+
