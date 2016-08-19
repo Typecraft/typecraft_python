@@ -66,6 +66,8 @@ class Text:
     def __str__(self):
         return dump(self.to_dict())
 
+    def __iter__(self):
+        return self.phrases.__iter__()
 
 class Phrase:
     """
@@ -114,6 +116,9 @@ class Phrase:
     def __str__(self):
         return dump(self.to_dict())
 
+    def __iter__(self):
+        return self.words.__iter__()
+
 
 class Word:
     """
@@ -149,6 +154,9 @@ class Word:
 
     def __str__(self):
         return dump(self.to_dict())
+
+    def __iter__(self):
+        return self.morphemes.__iter__()
 
 
 class Morpheme:

@@ -89,4 +89,45 @@ class TestModels(object):
         assert isinstance(word_str, basestring)
         assert isinstance(morpheme_str, basestring)
 
+    def test_iter_text(self):
+        text = Text()
+
+        phrase_1 = Phrase()
+        phrase_2 = Phrase()
+
+        phrases = [phrase_1, phrase_2]
+
+        text.add_phrase(phrase_1)
+        text.add_phrase(phrase_2)
+
+        for phrase in text:
+            assert phrase in phrases
+
+    def test_iter_phrase(self):
+        phrase = Phrase()
+
+        word_1 = Word()
+        word_2 = Word()
+
+        words = [word_1, word_2]
+
+        phrase.add_word(word_1)
+        phrase.add_word(word_2)
+
+        for word in phrase:
+            assert word in words
+
+    def test_iter_word(self):
+        word = Word()
+
+        morph_1 = Morpheme()
+        morph_2 = Morpheme()
+
+        morphs = [morph_1, morph_2]
+
+        word.add_morpheme(morph_1)
+        word.add_morpheme(morph_2)
+
+        for morph in word:
+            assert morph in morphs
 
