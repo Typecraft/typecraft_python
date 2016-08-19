@@ -174,6 +174,9 @@ class Morpheme:
         self.baseform = ""
         self.glosses = []
 
+    def add_gloss(self, gloss):
+        self.glosses.append(gloss)
+
     def to_dict(self):
         return {
             'morpheme': self.morpheme,
