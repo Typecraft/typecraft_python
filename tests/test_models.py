@@ -52,3 +52,41 @@ class TestModels(object):
 
     def test_add_morpheme_to_word(self):
         pass
+
+    def test_to_dict(self):
+        text = Text()
+        phrase = Phrase()
+        word = Word()
+        morpheme = Morpheme()
+
+        text.add_phrase(phrase)
+
+        text_dict = text.to_dict()
+        phrase_dict = phrase.to_dict()
+        word_dict = word.to_dict()
+        morpheme_dict = morpheme.to_dict()
+
+        assert isinstance(text_dict, dict)
+        assert isinstance(phrase_dict, dict)
+        assert isinstance(word_dict, dict)
+        assert isinstance(morpheme_dict, dict)
+
+    def test_to_str(self):
+        text = Text()
+        phrase = Phrase()
+        word = Word()
+        morpheme = Morpheme()
+
+        text.add_phrase(phrase)
+
+        text_str = str(text)
+        phrase_str = str(phrase)
+        word_str = str(word)
+        morpheme_str = str(morpheme)
+
+        assert isinstance(text_str, basestring)
+        assert isinstance(phrase_str, basestring)
+        assert isinstance(word_str, basestring)
+        assert isinstance(morpheme_str, basestring)
+
+
