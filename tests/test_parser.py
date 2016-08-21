@@ -11,7 +11,7 @@ class TestParser(object):
         cls.file_path = os.path.join(BASE_DIR, 'tests/resources/xml_1_test.xml')
         cls.small_tc_xml_string = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <typecraft xsi:schemaLocation="http://typecraft.org/typecraft.xsd" xmlns="http://typecraft.org/typecraft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <text id="3453" lang="und">
+            <text id="3453" lang="kri">
             <title>My name is Tormod.</title>
             <titleTranslation></titleTranslation>
             <extraMetadata setName="Default"/>
@@ -66,6 +66,17 @@ class TestParser(object):
 
         assert text is not None
         assert isinstance(text, Text)
+
+    def test_parse_preserves_metadata(self):
+        texts = Parser.parse(self.small_tc_xml_string)
+
+        assert isinstance(texts, list)
+        assert len(texts) == 1
+
+        text = texts[0]
+
+        assert text.language == "kri"
+        assert text.id == "3453"
 
     def test_parse_preserves_phrases(self):
         texts = Parser.parse(self.small_tc_xml_string)

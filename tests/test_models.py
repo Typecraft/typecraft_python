@@ -1,5 +1,6 @@
 from tc_xml_python.models import Text, Phrase, Word, Morpheme
 
+
 class TestModels(object):
     @classmethod
     def setup_class(cls):
@@ -139,4 +140,17 @@ class TestModels(object):
 
         assert morpheme.get_glosses_concatenated() == "PURP.ADJ>ADV"
         assert morpheme.get_glosses_concatenated(sort=True) == "ADJ>ADV.PURP"
+
+    def test_to_str(self):
+        text = Text()
+        text_str = str(text)
+
+        phr = Phrase()
+        phr_str = str(phr)
+
+        wrd = Word()
+        wrd_str = str(wrd)
+
+        mrph = Morpheme()
+        morpheme = str(mrph)
 
