@@ -171,8 +171,8 @@ class _ParserHelper:
 
         body = text_root.find(ns + 'body')
         delta = text_root.find(ns + 'delta')
-        id = text_root.attrib.get('tc:id')
-        lang = text_root.attrib.get('tc:lang')
+        id = text_root.attrib.get('id')
+        lang = text_root.attrib.get('lang')
 
         if body is not None:
             text.body = body
@@ -184,7 +184,7 @@ class _ParserHelper:
             text.id = id
 
         if lang is not None:
-            text.lang = lang
+            text.language = lang
 
         return
 
