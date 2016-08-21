@@ -60,7 +60,7 @@ class Text:
             'rich_text': self.rich_text,
             'delta': self.delta,
             'metadata': self.metadata,
-            'phrases': map(lambda phr: phr.to_dict(), self.phrases)
+            'phrases': list(map(lambda phr: phr.to_dict(), self.phrases))
         }
 
     def __str__(self):
@@ -68,6 +68,7 @@ class Text:
 
     def __iter__(self):
         return self.phrases.__iter__()
+
 
 class Phrase:
     """
@@ -107,10 +108,10 @@ class Phrase:
             'free_translation': self.free_translation,
             'free_translation2': self.free_translation2,
             'comment': self.comment,
-            'offset': self.offset,
-            'duration': self.duration,
+            'offset': str(self.offset),
+            'duration': str(self.duration),
             'senses': self.senses,
-            'words': map(lambda wrd: wrd.to_dict(), self.words)
+            'words': list(map(lambda wrd: wrd.to_dict(), self.words))
         }
 
     def __str__(self):
@@ -144,13 +145,17 @@ class Word:
         self.morphemes.append(morpheme)
 
     def to_dict(self):
-        return {
+        dict = {
             'word': self.word,
             'ipa': self.ipa,
             'pos': self.pos,
-            'stem_morpheme': self.stem_morpheme,
-            'morphemes': map(lambda mrph: mrph.to_dict(), self.morphemes)
+            'morphemes': list(map(lambda mrph: mrph.to_dict(), self.morphemes))
         }
+
+        if self.stem_morpheme is not None:
+            dict['stem_morpheme'] = self.stem_morpheme
+
+        return dict
 
     def __str__(self):
         return dump(self.to_dict())
