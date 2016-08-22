@@ -5,6 +5,24 @@ This file contains all models.
 """
 
 
+class Corpus:
+    """
+    The class representing a corpus files.
+
+    This class represents the 1-1 mapping to and from the tc-xml files.
+    """
+    def __init__(self):
+        self.texts = []
+
+    def __iter__(self):
+        return self.texts.__iter__()
+
+    def to_dict(self):
+        return {
+            'texts': self.texts
+        }
+
+
 class Text:
     """
     The class representing a text-object.
@@ -50,6 +68,22 @@ class Text:
             self.metadata[key] = value
         else:
             raise Exception("Wrong argument to add_metadata. Expected a key-value pair as argument one and two")
+
+    def attributes(self):
+        """
+        Return all non-children attributes of the text.
+
+        :return:
+        """
+        return {
+            'title': self.title,
+            'title_translation': self.title_translation,
+            'language': self.language,
+            'plain_text': self.plain_text,
+            'rich_text': self.rich_text,
+            'delta': self.delta,
+            'metadata': self.metadata,
+        }
 
     def to_dict(self):
         return {
@@ -102,6 +136,21 @@ class Phrase:
 
         self.words.append(word)
 
+    def attributes(self):
+        """
+        Gets all non-children attributes of the phrase.
+        :return:
+        """
+        return {
+            'phrase': self.phrase,
+            'free_translation': self.free_translation,
+            'free_translation2': self.free_translation2,
+            'comment': self.comment,
+            'offset': str(self.offset),
+            'duration': str(self.duration),
+            'senses': self.senses
+        }
+
     def to_dict(self):
         return {
             'phrase': self.phrase,
@@ -144,18 +193,27 @@ class Word:
 
         self.morphemes.append(morpheme)
 
-    def to_dict(self):
-        dict = {
+    def attributes(self):
+        """
+        Returns all non-children attributes of the word.
+
+        :return:
+        """
+        return {
             'word': self.word,
             'ipa': self.ipa,
             'pos': self.pos,
-            'morphemes': list(map(lambda mrph: mrph.to_dict(), self.morphemes))
+            'stem_morpheme': self.stem_morpheme
         }
 
-        if self.stem_morpheme is not None:
-            dict['stem_morpheme'] = self.stem_morpheme
-
-        return dict
+    def to_dict(self):
+        return {
+            'word': self.word,
+            'ipa': self.ipa,
+            'pos': self.pos,
+            'stem_morpheme': self.stem_morpheme,
+            'morphemes': list(map(lambda mrph: mrph.to_dict(), self.morphemes))
+        }
 
     def __str__(self):
         return dump(self.to_dict())
@@ -187,6 +245,17 @@ class Morpheme:
             return ".".join(sorted(self.glosses))
         else:
             return ".".join(self.glosses)
+
+    def attributes(self):
+        """
+        Returns all non-children attributes of the morpheme.
+        :return:
+        """
+        return {
+            'morpheme': self.morpheme,
+            'baseform': self.baseform,
+            'meaning': self.meaning
+        }
 
     def to_dict(self):
         return {
