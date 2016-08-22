@@ -9,6 +9,7 @@ class TestParser(object):
     @classmethod
     def setup_class(cls):
         cls.file_path = os.path.join(BASE_DIR, 'tests/resources/xml_1_test.xml')
+        cls.file_path_2 = os.path.join(BASE_DIR, 'tests/resources/xml_2_test.xml')
         cls.small_tc_xml_string = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <typecraft xsi:schemaLocation="http://typecraft.org/typecraft.xsd" xmlns="http://typecraft.org/typecraft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <text id="3453" lang="kri">
@@ -48,6 +49,7 @@ class TestParser(object):
 
     def test_parse_file_does_not_crash(self):
         texts = Parser.parse_file(self.file_path)
+        texts_2 = Parser.parse_file(self.file_path_2)
 
         assert texts is not None
 
@@ -134,3 +136,25 @@ class TestParser(object):
         assert morpheme.morpheme == "My"
         assert len(morpheme.glosses) == 1
         assert morpheme.glosses[0] == "1PL"
+
+    def test_write_xml(self):
+        texts = Parser.parse(self.small_tc_xml_string)
+
+        written = Parser.write(texts)
+
+        # We just test some containments
+
+        assert "word head=\"false\" text=\"My\"" in written
+        assert "<gloss>NEUT</gloss>" in written
+        assert "<globaltags id=\"1\" tagset=\"Default\"/>"
+
+    def test_write_xml_to_file(self):
+        texts = Parser.parse(self.small_tc_xml_string)
+
+        path = os.path.join(BASE_DIR, "tests/resources/out_test.xml")
+        Parser.write_to_file(path, texts)
+
+        assert os.path.isfile(path)
+        os.remove(path)
+
+

@@ -1,4 +1,6 @@
 import xml.etree.ElementTree as ElementTree
+from xml.dom import minidom
+
 from tc_xml_python.exceptions.parsing import TypecraftParseException
 from tc_xml_python.models import Text, Phrase, Word, Morpheme
 from tc_xml_python.globals import *
@@ -16,6 +18,18 @@ tag_text = ns + 'text'
 tag_phrase = ns + 'phrase'
 tag_word = ns + 'word'
 tag_morpheme = ns + 'morpheme'
+
+XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+
+
+def prettify(string):
+    """
+    Helper method.
+
+    Return a pretty-printed XML string for the Element.
+    """
+    reparsed = minidom.parseString(string)
+    return reparsed.toprettyxml(indent="\t")
 
 
 class _ParserHelper:
@@ -476,3 +490,91 @@ class Parser:
         """
         tree = ElementTree.parse(file_path)
         return Parser.convert_etree_to_texts(tree.getroot())
+
+    @staticmethod
+    def convert_texts_to_etree(texts):
+        root = ElementTree.Element("typecraft")
+        root.set('xmlns', ns[1:-1])   # Strip brackets
+        root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+        root.set('xsi:schemaLocation', 'https://typecraft.org/typecraft.xsd')
+
+        for text in texts:
+            Parser.convert_text_to_etree(root, text)
+
+        return root
+
+    @staticmethod
+    def convert_text_to_etree(root, text):
+        assert isinstance(text, Text)
+
+        text_el = ElementTree.SubElement(root, "text", {'lang': text.language})
+
+        ElementTree.SubElement(text_el, 'title').text = text.title
+        ElementTree.SubElement(text_el, 'titleTranslation').text = text.title_translation
+        ElementTree.SubElement(text_el, 'body').text = text.rich_text
+        ElementTree.SubElement(text_el, 'delta').text = text.delta
+
+        for phrase in text:
+            Parser.convert_phrase_to_etree(text_el, phrase)
+
+    @staticmethod
+    def convert_phrase_to_etree(root, phrase):
+        assert isinstance(phrase, Phrase)
+
+        phrase_el = ElementTree.SubElement(root, 'phrase', {'valid': 'UNKNOWN'})
+
+        ElementTree.SubElement(phrase_el, 'original').text = phrase.phrase
+        ElementTree.SubElement(phrase_el, 'translation').text = phrase.free_translation
+        ElementTree.SubElement(phrase_el, 'translation2').text = phrase.free_translation2
+        ElementTree.SubElement(phrase_el, 'globaltags', {'id': '1', 'tagset': 'Default'})
+        ElementTree.SubElement(phrase_el, 'comment').text = phrase.comment
+
+        for word in phrase:
+            Parser.convert_word_to_etree(phrase_el, word)
+
+    @staticmethod
+    def convert_word_to_etree(root, word):
+        assert isinstance(word, Word)
+
+        word_el = ElementTree.SubElement(root, 'word', {'text': word.word, 'head': 'false'})
+
+        ElementTree.SubElement(word_el, 'pos').text = word.pos
+
+        for morpheme in word:
+            Parser.convert_morpheme_to_etree(word_el, morpheme)
+
+    @staticmethod
+    def convert_morpheme_to_etree(root, morpheme):
+        assert isinstance(morpheme, Morpheme)
+
+        morpheme_el = ElementTree.SubElement(root, 'morpheme', {
+            'text': morpheme.morpheme,
+            'baseform': morpheme.baseform,
+            'meaning': morpheme.meaning
+        })
+
+        for gloss in morpheme.glosses:
+            ElementTree.SubElement(morpheme_el, 'gloss').text = gloss
+
+
+    @staticmethod
+    def write_to_file(file_name, texts):
+        """
+        Writes a text to a file
+        :param file:
+        :param text:
+        :return:
+        """
+
+        root = Parser.convert_texts_to_etree(texts)
+
+        tree = ElementTree.ElementTree(root)
+        tree.write(file_name)
+
+    @staticmethod
+    def write(texts):
+        """
+        Returns a string-xml-representation of a text
+        :return:
+        """
+        return XML_HEADER + "\n" + ElementTree.tostring(Parser.convert_texts_to_etree(texts))
