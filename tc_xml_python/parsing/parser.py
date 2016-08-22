@@ -556,13 +556,12 @@ class Parser:
         for gloss in morpheme.glosses:
             ElementTree.SubElement(morpheme_el, 'gloss').text = gloss
 
-
     @staticmethod
     def write_to_file(file_name, texts):
         """
         Writes a text to a file
-        :param file:
-        :param text:
+        :param texts:
+        :param file_name:
         :return:
         """
 
@@ -577,4 +576,4 @@ class Parser:
         Returns a string-xml-representation of a text
         :return:
         """
-        return XML_HEADER + "\n" + ElementTree.tostring(Parser.convert_texts_to_etree(texts))
+        return XML_HEADER + "\n" + str(ElementTree.tostring(Parser.convert_texts_to_etree(texts)))
