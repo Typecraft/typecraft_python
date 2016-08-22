@@ -114,7 +114,7 @@ class _ParserHelper:
         Checks if a morpheme-element is conformant to the Typecraft XML-model.
 
         It must have the following attributes:
-            text
+            None
 
         It must have the following elements:
             None
@@ -122,14 +122,7 @@ class _ParserHelper:
         :param morpheme_root:
         :return:
         """
-
-        if not STRICT_MODE:
-            return
-
-        if morpheme_root.attrib.get('text') is None:
-            raise TypecraftParseException("Element " + tag_morpheme + " is missing attribute 'text'")
-
-        return
+        return True
 
     @staticmethod
     def add_obligatory_fields_to_text(text, text_root):
@@ -321,13 +314,13 @@ class _ParserHelper:
         """
         Adds the obligatory fields of a morpheme. Assumes them to exist.
 
+        Does nothing.
+
         :param morpheme:
         :param morpheme_root:
         :return:
         """
-        morpheme_text = morpheme_root.attrib.get('text')
-
-        morpheme.morpheme = morpheme_text
+        return
 
     @staticmethod
     def check_and_add_optional_fields_to_morpheme(morpheme, morpheme_root):
@@ -339,6 +332,7 @@ class _ParserHelper:
         :return:
         """
 
+        morpheme_text = morpheme_root.attrib.get('text')
         baseform = morpheme_root.attrib.get('baseform')
         meaning = morpheme_root.attrib.get('meaning')
 
@@ -349,6 +343,9 @@ class _ParserHelper:
 
         if meaning is not None:
             morpheme.meaning = meaning
+
+        if morpheme_text is not None:
+            morpheme.morpheme = morpheme_text
 
         for gloss in gloss_tree:
             morpheme.glosses.append(gloss.text)
