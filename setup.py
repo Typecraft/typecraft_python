@@ -20,7 +20,7 @@ test_requirements = [
 
 setup(
     name='tc_xml_python',
-    version='0.3.0',
+    version='0.3.1',
     description="Lightweight implementation of the Typecraft XML format in python.",
     long_description=readme + '\n\n' + history,
     author="Tormod Haugland",
