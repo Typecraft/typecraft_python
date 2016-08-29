@@ -1,9 +1,9 @@
 import xml.etree.ElementTree as ElementTree
 from xml.dom import minidom
 
-from tc_xml_python.exceptions.parsing import TypecraftParseException
-from tc_xml_python.models import Text, Phrase, Word, Morpheme
-from tc_xml_python.globals import *
+from typecraft_python.exceptions.parsing import TypecraftParseException
+from typecraft_python.models import Text, Phrase, Word, Morpheme
+from typecraft_python.globals import *
 
 """
 The typecraft namespace

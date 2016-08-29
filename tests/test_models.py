@@ -1,4 +1,4 @@
-from tc_xml_python.models import Text, Phrase, Word, Morpheme
+from typecraft_python.models import Text, Phrase, Word, Morpheme
 
 
 class TestModels(object):

@@ -19,26 +19,26 @@ test_requirements = [
 ]
 
 setup(
-    name='tc_xml_python',
+    name='typecraft_python',
     version='0.3.1',
     description="Lightweight implementation of the Typecraft XML format in python.",
     long_description=readme + '\n\n' + history,
     author="Tormod Haugland",
     author_email='tormod.haugland@gmail.com',
-    url='https://github.com/Typecraft/tc_xml_python',
+    url='https://github.com/Typecraft/typecraft_python',
     packages=find_packages(),
-    package_dir={'tc_xml_python':
-                 'tc_xml_python'},
+    package_dir={'typecraft_python':
+                 'typecraft_python'},
     entry_points={
         'console_scripts': [
-            'tc_xml_python=tc_xml_python.cli:main'
+            'typecraft_python=typecraft_python.cli:main'
         ]
     },
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
     zip_safe=False,
-    keywords='tc_xml_python',
+    keywords='typecraft_python',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

@@ -2,7 +2,7 @@
 deploy:
   true:
     condition: $TOXENV == py27
-    repo: Typecraft/tc_xml_python
+    repo: Typecraft/typecraft_python
     tags: true
   distributions: sdist bdist_wheel
   password:
