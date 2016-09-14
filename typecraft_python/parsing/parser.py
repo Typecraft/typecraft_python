@@ -222,7 +222,7 @@ class _ParserHelper:
         """
         original = phrase_root.find(ns + 'original').text
 
-        phrase.phrase = original
+        phrase.phrase = original if original is not None else ""
         return
 
     @staticmethod
@@ -247,7 +247,7 @@ class _ParserHelper:
             phrase.validity = validity
 
         if translation_tree is not None:
-            phrase.translation = translation_tree.text
+            phrase.translation = translation_tree.text if translation_tree.text is not None else ""
 
         if globaltags_tree is not None:
             phrase.global_tags = {'id': globaltags_tree.attrib.get('id'),
@@ -280,7 +280,7 @@ class _ParserHelper:
         """
 
         word_text = word_root.attrib.get('text')
-        word.word = word_text
+        word.word = word_text if word_text is not None else ""
 
         return
 
@@ -305,7 +305,7 @@ class _ParserHelper:
             word.head = (head == 'true')
 
         if pos_tree is not None:
-            word.pos = pos_tree.text
+            word.pos = pos_tree.text if pos_tree.text is not None else ""
 
         return
 
