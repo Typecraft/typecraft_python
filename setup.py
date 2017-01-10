@@ -10,12 +10,9 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'Click>=6.0',
-    # TODO: put package requirements here
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
 ]
 
 setup(
@@ -29,11 +26,6 @@ setup(
     packages=find_packages(),
     package_dir={'typecraft_python':
                  'typecraft_python'},
-    entry_points={
-        'console_scripts': [
-            'typecraft_python=typecraft_python.cli:main'
-        ]
-    },
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
