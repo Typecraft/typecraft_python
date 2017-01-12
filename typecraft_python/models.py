@@ -36,7 +36,7 @@ class Text:
         """
         self.title = ""
         self.title_translation = ""
-        self.language = "und" # Und is the default for the undefined language
+        self.language = "und"  # Und is the default for the undefined language
         self.plain_text = ""
         self.rich_text = ""
         self.delta = {}
@@ -54,6 +54,16 @@ class Text:
             raise Exception("Wrong argument to add_phrase. Expected Phrase instance")
 
         self.phrases.append(phrase)
+
+    def add_phrases(self, phrases):
+        """
+        Adds an iterable of phrases to this text.
+
+        :param phrases:
+        :return:
+        """
+        for phrase in phrases:
+            self.add_phrase(phrase)
 
     def add_metadata(self, key, value):
         """
@@ -136,6 +146,16 @@ class Phrase:
 
         self.words.append(word)
 
+    def add_words(self, words):
+        """
+        Adds an iterable of words to the phrase.
+
+        :param words:
+        :return: Nothing
+        """
+        for word in words:
+            self.add_word(word)
+
     def attributes(self):
         """
         Gets all non-children attributes of the phrase.
@@ -188,10 +208,26 @@ class Word:
         self.morphemes = []
 
     def add_morpheme(self, morpheme):
+        """
+        Adds a morpheme to this word.
+
+        :param morpheme:
+        :return: Nothing
+        """
         if not (isinstance(morpheme, Morpheme)):
             raise Exception("Wrong argument to add_morpheme, expected Morpheme instance")
 
         self.morphemes.append(morpheme)
+
+    def add_morphemes(self, morphemes):
+        """
+        Adds an iterable of morphemes to this word.
+
+        :param morpheme:
+        :return: Nothing
+        """
+        for morpheme in morphemes:
+            self.add_morpheme(morpheme)
 
     def attributes(self):
         """
@@ -221,6 +257,12 @@ class Word:
     def __iter__(self):
         return self.morphemes.__iter__()
 
+    @staticmethod
+    def from_text(word):
+        obj = Word()
+        obj.word = word
+        return obj
+
 
 class Morpheme:
     """
@@ -238,9 +280,48 @@ class Morpheme:
         self.glosses = []
 
     def add_gloss(self, gloss):
+        """
+        Adds a gloss in string-form to this morpheme.
+
+        :param gloss:
+        :return:
+        """
         self.glosses.append(gloss)
 
+    def add_glosses(self, glosses):
+        """
+        Adds an iterable of glosses in string-form to this morpheme
+        :param glosses:
+        :return:
+        """
+        for gloss in glosses:
+            self.add_gloss(gloss)
+
+    def add_concatenated_glosses(self, glosses):
+        """
+        Adds an iterable of glosses in concatenated form to this morpheme.
+
+        Example input: 3SG.FEM.INDEF => add_glosses([3SG, FEM, INDEF])
+
+        :param glosses:
+        :return:
+        """
+        if not isinstance(glosses, basestring):
+            raise Exception("Erroneous input to add_concatenated_glosses: Expected string, got " + type(glosses))
+
+        for gloss in glosses.split("."):
+            self.add_gloss(gloss)
+
     def get_glosses_concatenated(self, sort=False):
+        """
+        Gets the glosses of this morpheme in concatenated form:
+
+        Example:
+        [SG, MASC, DEF] => SG.MASC.DEF
+
+        :param sort: If sort is true, the glosses will be sorted before concatenation
+        :return:
+        """
         if sort:
             return ".".join(sorted(self.glosses))
         else:

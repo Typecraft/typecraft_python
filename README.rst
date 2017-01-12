@@ -1,20 +1,20 @@
 ===============================
-Typecraft XML Python
+Typecraft Python
 ===============================
 
 
-.. image:: https://img.shields.io/pypi/v/tc_xml_python.svg
-        :target: https://pypi.python.org/pypi/tc_xml_python
+.. image:: https://img.shields.io/pypi/v/typecraft_python.svg
+        :target: https://pypi.python.org/pypi/typecraft_python
 
-.. image:: https://img.shields.io/travis/Typecraft/tc_xml_python.svg
-        :target: https://travis-ci.org/Typecraft/tc_xml_python
+.. image:: https://img.shields.io/travis/Typecraft/typecraft_python.svg
+        :target: https://travis-ci.org/Typecraft/typecraft_python
 
-.. image:: https://readthedocs.org/projects/tc-xml-python/badge/?version=latest
-        :target: https://tc-xml-python.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/typecraft_python/badge/?version=latest
+        :target: https://typecraft_python.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/Typecraft/tc_xml_python/shield.svg
-     :target: https://pyup.io/repos/github/Typecraft/tc_xml_python/
+.. image:: https://pyup.io/repos/github/Typecraft/typecraft_python/shield.svg
+     :target: https://pyup.io/repos/github/Typecraft/typecraft_python/
      :alt: Updates
 
 
@@ -22,12 +22,12 @@ Lightweight implementation of the Typecraft XML format in python.
 
 
 * Free software: MIT license
-* Documentation: https://tc-xml-python.readthedocs.io.
+* Documentation: https://typecraft_python.readthedocs.io.
 
 Installation
 --------
     
-    pip install tc_xml_python
+    pip install typecraft_python
 
 
 Features
