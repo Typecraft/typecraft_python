@@ -36,7 +36,7 @@ class Text:
         """
         self.title = ""
         self.title_translation = ""
-        self.language = "und" # Und is the default for the undefined language
+        self.language = "und"  # Und is the default for the undefined language
         self.plain_text = ""
         self.rich_text = ""
         self.delta = {}
@@ -257,6 +257,12 @@ class Word:
     def __iter__(self):
         return self.morphemes.__iter__()
 
+    @staticmethod
+    def from_text(word):
+        obj = Word()
+        obj.word = word
+        return obj
+
 
 class Morpheme:
     """
@@ -302,7 +308,7 @@ class Morpheme:
         """
         if not isinstance(glosses, basestring):
             raise Exception("Erroneous input to add_concatenated_glosses: Expected string, got " + type(glosses))
-        
+
         for gloss in glosses.split("."):
             self.add_gloss(gloss)
 
