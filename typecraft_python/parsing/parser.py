@@ -568,7 +568,7 @@ class Parser:
         root = Parser.convert_texts_to_etree(texts)
 
         tree = ElementTree.ElementTree(root)
-        tree.write(file_name)
+        tree.write(file_name, encoding="UTF-8")
 
     @staticmethod
     def write(texts):
