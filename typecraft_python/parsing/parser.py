@@ -576,4 +576,4 @@ class Parser:
         Returns a string-xml-representation of a text
         :return:
         """
-        return XML_HEADER + "\n" + str(ElementTree.tostring(Parser.convert_texts_to_etree(texts)))
+        return ElementTree.tostring(Parser.convert_texts_to_etree(texts), encoding="UTF-8")

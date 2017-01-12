@@ -1,7 +1,8 @@
+# coding: utf-8
 import pytest
 import os
 from typecraft_python.parsing.parser import Parser
-from typecraft_python.models import Text
+from typecraft_python.models import Text, Phrase, Word
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -156,5 +157,23 @@ class TestParser(object):
 
         assert os.path.isfile(path)
         os.remove(path)
+
+    def test_unicode(self):
+        text = Text()
+        phrase = Phrase()
+        phrase.phrase = u"æ e i a æ å"
+        word_1 = Word.from_text(u'æ')
+        word_2 = Word.from_text(u'e')
+        word_3 = Word.from_text(u'i')
+        word_4 = Word.from_text(u'a')
+        word_5 = Word.from_text(u'æ')
+        word_6 = Word.from_text(u'å')
+
+        phrase.add_words([word_1, word_2, word_3, word_4, word_5, word_6])
+        text.add_phrase(phrase)
+
+        string = Parser.write([text])
+
+        assert u'æ e i a æ å' in string.decode("utf-8")
 
 
