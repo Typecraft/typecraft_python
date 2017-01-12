@@ -141,7 +141,7 @@ class TestParser(object):
     def test_write_xml(self):
         texts = Parser.parse(self.small_tc_xml_string)
 
-        written = Parser.write(texts)
+        written = Parser.write(texts).decode("utf-8")
 
         # We just test some containments
 
