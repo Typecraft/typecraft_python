@@ -1,6 +1,6 @@
-===============================
+================
 Typecraft Python
-===============================
+================
 
 
 .. image:: https://img.shields.io/pypi/v/typecraft_python.svg
@@ -25,8 +25,7 @@ Lightweight implementation of the Typecraft XML format in python.
 * Documentation: https://typecraft_python.readthedocs.io.
 
 Installation
---------
-    
+------------
     pip install typecraft_python
 
 
@@ -36,13 +35,13 @@ Features
 This repository contains a lightweight python implementation of the Typecraft IGT-model, bundled with a simple parser.
 
 Usage
--------
+-----
 
 Currently, the project can only be used as a library, and does nothing as a standalone.
 
 
 Credits
----------
+-------
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
