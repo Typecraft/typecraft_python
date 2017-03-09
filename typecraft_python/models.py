@@ -1,4 +1,5 @@
 import six
+from enum import Enum
 from yaml import dump
 
 """
@@ -113,6 +114,14 @@ class Text:
 
     def __iter__(self):
         return self.phrases.__iter__()
+
+
+class PhraseValidity(Enum):
+    UNKNOWN = 1
+    VALID = 2
+    INVALID = 3
+    SPECIAL = 4
+    EMPTY = 5
 
 
 class Phrase:
