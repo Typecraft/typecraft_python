@@ -142,15 +142,105 @@ def test_init_morpheme_concatenated_glosses():
 
 
 def test_add_phrase_to_text():
-    pass
+    text = Text()
+
+    phrase1 = Phrase()
+    phrase2 = Phrase()
+
+    text.add_phrase(phrase1)
+    text.add_phrase(phrase2)
+
+    assert phrase1 in text.phrases
+    assert phrase2 in text.phrases
+
+    text2 = Text()
+    text2.add_phrases([phrase1, phrase2])
+
+    assert phrase1 in text2.phrases
+    assert phrase2 in text2.phrases
+
+
+def test_add_bad_phrase_to_text():
+    text = Text()
+
+    with pytest.raises(Exception):
+        text.add_phrase("Arne")
+
+    with pytest.raises(Exception):
+        text.add_phrase({'phrase': 'phrase'})
+
+    with pytest.raises(Exception):
+        text.add_phrases([2, 52, ""])
 
 
 def test_add_word_to_phrase():
-    pass
+    phrase = Phrase()
+
+    word1 = Word()
+    word2 = Word()
+
+    phrase.add_word(word1)
+    phrase.add_word(word2)
+
+    assert word1 in phrase
+    assert word2 in phrase
+
+    phrase2 = Phrase()
+
+    phrase2.add_words([word1, word2])
+
+    assert word1 in phrase2
+    assert word2 in phrase2
+
+
+def test_add_bad_word_to_phrase():
+    phrase = Phrase()
+
+    with pytest.raises(Exception):
+        phrase.add_word("Word")
+
+    with pytest.raises(Exception):
+        phrase.add_word({'word': 'Word'})
+
+    with pytest.raises(Exception):
+        phrase.add_word(2)
+
+    with pytest.raises(Exception):
+        phrase.add_words([2, 4, 5, ""])
 
 
 def test_add_morpheme_to_word():
-    pass
+    word = Word()
+
+    morpheme1 = Morpheme()
+    morpheme2 = Morpheme()
+
+    word.add_morpheme(morpheme1)
+    word.add_morpheme(morpheme2)
+
+    assert morpheme1 in word
+    assert morpheme2 in word
+
+    word2 = Word()
+    word2.add_morphemes([morpheme1, morpheme2])
+    assert morpheme1 in word2
+    assert morpheme2 in word2
+
+
+def test_add_bad_morpheme_to_word():
+    word = Word()
+
+    with pytest.raises(Exception):
+        word.add_morpheme("a")
+
+    with pytest.raises(Exception):
+        word.add_morpheme(2)
+
+    with pytest.raises(Exception):
+        word.add_morpheme({'morpheme': 'morpheme'})
+
+    with pytest.raises(Exception):
+        word.add_morphemes([2,3, 'regerg'])
 
 
 def test_to_dict():
