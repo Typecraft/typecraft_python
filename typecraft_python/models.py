@@ -319,7 +319,7 @@ class Word:
             'ipa': self.ipa,
             'pos': self.pos,
             'stem_morpheme': self.stem_morpheme,
-            'morphemes': list(map(lambda mrph: mrph.to_dict(), self.morphemes))
+            'morphemes': list(map(lambda morpheme: morpheme.to_dict(), self.morphemes))
         }
 
     def __str__(self):
