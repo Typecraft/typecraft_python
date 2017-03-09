@@ -1,3 +1,4 @@
+import six
 from yaml import dump
 
 """
@@ -294,6 +295,9 @@ class Morpheme:
         :param glosses:
         :return:
         """
+        if isinstance(glosses, six.string_types):
+            return self.add_concatenated_glosses(glosses)
+
         for gloss in glosses:
             self.add_gloss(gloss)
 
@@ -306,7 +310,7 @@ class Morpheme:
         :param glosses:
         :return:
         """
-        if not isinstance(glosses, basestring):
+        if not isinstance(glosses, six.string_types):
             raise Exception("Erroneous input to add_concatenated_glosses: Expected string, got " + type(glosses))
 
         for gloss in glosses.split("."):
@@ -320,7 +324,7 @@ class Morpheme:
         [SG, MASC, DEF] => SG.MASC.DEF
 
         :param sort: If sort is true, the glosses will be sorted before concatenation
-        :return:
+        :return: A string with the glosses in concatenated form
         """
         if sort:
             return ".".join(sorted(self.glosses))
