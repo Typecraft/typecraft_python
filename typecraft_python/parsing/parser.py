@@ -177,15 +177,11 @@ class _ParserHelper:
         """
 
         body = text_root.find(ns + 'body')
-        delta = text_root.find(ns + 'delta')
         id = text_root.attrib.get('id')
         lang = text_root.attrib.get('lang')
 
         if body is not None:
             text.body = body
-
-        if delta is not None:
-            text.delta = delta
 
         if id is not None:
             text.id = id
@@ -362,7 +358,7 @@ class _ParserHelper:
             morpheme.morpheme = morpheme_text
 
         for gloss in gloss_tree:
-            morpheme.glosses.append(gloss.text)
+            morpheme.add_gloss(gloss.text)
 
         return
 
@@ -512,7 +508,6 @@ class Parser:
         ElementTree.SubElement(text_el, 'title').text = text.title
         ElementTree.SubElement(text_el, 'titleTranslation').text = text.title_translation
         ElementTree.SubElement(text_el, 'body').text = text.rich_text
-        ElementTree.SubElement(text_el, 'delta').text = text.delta
 
         for phrase in text:
             Parser.convert_phrase_to_etree(text_el, phrase)

@@ -1,6 +1,7 @@
 import pytest
 
-from typecraft_python.models import Text, Phrase, Word, Morpheme
+from typecraft_python.models import Text, Phrase, Word, Morpheme, PhraseValidity
+
 
 def test_models_exist():
     assert Text is not None
@@ -10,40 +11,134 @@ def test_models_exist():
 
 
 def test_init_text():
-    my_text = Text()
+    text = Text()
 
-    assert my_text is not None
-    assert my_text.title is ""
-    assert my_text.title_translation is ""
-    assert my_text.language is "und"
-    assert my_text.plain_text is ""
-    assert my_text.rich_text is ""
-    assert my_text.delta is not None
-    assert my_text.metadata is not None
-    assert my_text.phrases is not None
+    assert text is not None
+    assert text.title is ""
+    assert text.title_translation is ""
+    assert text.language is "und"
+    assert text.plain_text is ""
+    assert text.rich_text is ""
+    assert text.metadata is not None
+    assert text.phrases is not None
+
+    phrase = Phrase()
+    text2 = Text(
+        title='Title',
+        title_translation='Tittel',
+        language='nob',
+        plain_text='Dette er en tekst.',
+        rich_text='<phrase>Dette er en tekst</phrase>',
+        metadata={'key': 'value'},
+        phrases=[phrase]
+    )
+
+    assert text2.title == 'Title'
+    assert text2.title_translation == 'Tittel'
+    assert text2.language == 'nob'
+    assert text2.plain_text == 'Dette er en tekst.'
+    assert text2.rich_text == '<phrase>Dette er en tekst</phrase>'
+    assert text2.metadata == {'key': 'value'}
+    assert phrase in text2.phrases
 
 
 def test_init_phrase():
-    my_phrase = Phrase()
+    phrase = Phrase()
 
-    assert my_phrase is not None
+    assert phrase is not None
 
-    assert my_phrase.phrase is ""
-    assert my_phrase.free_translation is ""
-    assert my_phrase.free_translation2 is ""
-    assert my_phrase.comment is ""
-    assert my_phrase.offset is 0
-    assert my_phrase.duration is 0
-    assert my_phrase.senses is not None
-    assert my_phrase.words is not None
+    assert phrase.phrase is ""
+    assert phrase.free_translation is ""
+    assert phrase.free_translation2 is ""
+    assert phrase.comment is ""
+    assert phrase.offset is 0
+    assert phrase.duration is 0
+    assert phrase.senses is not None
+    assert phrase.words is not None
+
+    word = Word()
+    phrase2 = Phrase(
+        phrase="Ola liker katter",
+        free_translation="Ola likes cats",
+        free_translation2="Ola s'aime chiennes",
+        comment="Comment",
+        offset=5,
+        duration=0,
+        words=[word]
+    )
+
+    assert phrase2.phrase == "Ola liker katter"
+    assert phrase2.free_translation == "Ola likes cats"
+    assert phrase2.free_translation2 == "Ola s'aime chiennes"
+    assert phrase2.comment == "Comment"
+    assert phrase2.offset == 5
+    assert phrase2.duration == 0
+    assert word in phrase2.words
+
+
+def test_init_phrase_with_validity_string():
+    phrase = Phrase(validity='UNKNOWN')
+    assert phrase.validity == PhraseValidity.UNKNOWN
 
 
 def test_init_word():
-    pass
+    word = Word()
+
+    # Test defaults
+    assert word.word == ""
+    assert word.ipa == ""
+    assert word.pos == ""
+    assert word.stem_morpheme is None
+    assert len(word.morphemes) == 0
+
+    morpheme = Morpheme()
+    word2 = Word(
+        word="Ola",
+        ipa="Ola",
+        pos="N",
+        stem_morpheme=morpheme,
+        morphemes=[morpheme]
+    )
+
+    assert word2.word == "Ola"
+    assert word2.ipa == "Ola"
+    assert word2.pos == "N"
+    assert word2.stem_morpheme == morpheme
+    assert len(word2.morphemes) == 1
+    assert morpheme in word2.morphemes
 
 
 def test_init_morpheme():
-    pass
+    morpheme = Morpheme()
+
+    # Test defaults
+    assert morpheme.morpheme == ""
+    assert morpheme.meaning == ""
+    assert morpheme.baseform == ""
+    assert len(morpheme.glosses) == 0
+
+    gloss = "SBJ"
+    morpheme2 = Morpheme(
+        morpheme="Ola",
+        meaning="Ola",
+        baseform="Ola",
+        glosses=[gloss]
+    )
+
+    assert morpheme2.morpheme == "Ola"
+    assert morpheme2.meaning == "Ola"
+    assert morpheme2.baseform == "Ola"
+    assert len(morpheme2.glosses) == 1
+    assert "SBJ" in morpheme2.glosses
+
+
+def test_init_morpheme_concatenated_glosses():
+    morpheme = Morpheme(
+        glosses="SBJ.MOT"
+    )
+
+    assert "SBJ" in morpheme.glosses
+    assert "MOT" in morpheme.glosses
 
 
 def test_add_phrase_to_text():

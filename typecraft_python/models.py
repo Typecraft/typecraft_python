@@ -32,18 +32,32 @@ class Text:
     A text is formally a collection of sentences with some extra metadata.
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        title="",
+        title_translation="",
+        language="und",
+        plain_text="",
+        rich_text="",
+        metadata=None,
+        phrases=None
+    ):
         """
-        Default constrcutor
+        Default constructor
         """
-        self.title = ""
-        self.title_translation = ""
-        self.language = "und"  # Und is the default for the undefined language
-        self.plain_text = ""
-        self.rich_text = ""
-        self.delta = {}
+        self.title = title
+        self.title_translation = title_translation
+        self.language = language  # Und is the default for the undefined language
+        self.plain_text = plain_text
+        self.rich_text = rich_text
         self.metadata = {}
         self.phrases = []
+
+        if phrases and hasattr(phrases, '__iter__'):
+            self.add_phrases(phrases)
+
+        if metadata and isinstance(metadata, dict):
+            self.metadata.update(metadata)
 
     def add_phrase(self, phrase):
         """
@@ -93,7 +107,6 @@ class Text:
             'language': self.language,
             'plain_text': self.plain_text,
             'rich_text': self.rich_text,
-            'delta': self.delta,
             'metadata': self.metadata,
         }
 
@@ -104,7 +117,6 @@ class Text:
             'language': self.language,
             'plain_text': self.plain_text,
             'rich_text': self.rich_text,
-            'delta': self.delta,
             'metadata': self.metadata,
             'phrases': list(map(lambda phr: phr.to_dict(), self.phrases))
         }
@@ -131,18 +143,41 @@ class Phrase:
     A phrase is a collection of words.
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        phrase="",
+        free_translation="",
+        free_translation2="",
+        comment="",
+        validity=PhraseValidity.EMPTY,
+        offset=0,
+        duration=0,
+        senses=None,
+        words=None
+    ):
         """
-        Default constructor.
+        Constructor.
         """
-        self.phrase = ""
-        self.free_translation = ""
-        self.free_translation2 = ""
-        self.comment = ""
-        self.offset = 0
-        self.duration = 0
+        self.phrase = phrase
+        self.free_translation = free_translation
+        self.free_translation2 = free_translation2
+        self.comment = comment
+        self.offset = offset
+        self.duration = duration
         self.senses = []
         self.words = []
+        if words:
+            self.add_words(words)
+        if senses:
+            self.add_senses(senses)
+
+        if isinstance(validity, six.string_types):
+            if not hasattr(PhraseValidity, validity):
+                raise Exception("Error setting validity for phrase. Got an invalid validity tag '%s'" % validity)
+            else:
+                self.validity = PhraseValidity[validity]
+        else:
+            self.validity = validity
 
     def add_word(self, word):
         """
@@ -165,6 +200,24 @@ class Phrase:
         """
         for word in words:
             self.add_word(word)
+
+    def add_sense(self, sense):
+        """
+        Adds a sense-tag to the phrase
+        :param sense: A sense tag
+        :return: Void
+        """
+        self.senses.append(sense)
+
+    def add_senses(self, senses):
+        """
+        Adds an iterable of senses to the phrase.
+
+        :param senses: An iterable of senses.
+        :return: Void
+        """
+        for sense in senses:
+            self.add_sense(sense)
 
     def attributes(self):
         """
@@ -207,15 +260,23 @@ class Word:
     A word is a collection of morphemes and an associated POS-tag.
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        word="",
+        ipa="",
+        pos="",
+        stem_morpheme=None,
+        morphemes=[]
+    ):
         """
         Default constructor.
         """
-        self.word = ""
-        self.ipa = ""
-        self.pos = ""
-        self.stem_morpheme = None
+        self.word = word
+        self.ipa = ipa
+        self.pos = pos
+        self.stem_morpheme = stem_morpheme
         self.morphemes = []
+        self.add_morphemes(morphemes)
 
     def add_morpheme(self, morpheme):
         """
@@ -283,11 +344,22 @@ class Morpheme:
     It is comprised of a text-content and a set of glosses.
     """
 
-    def __init__(self):
-        self.morpheme = ""
-        self.meaning = ""
-        self.baseform = ""
+    def __init__(
+        self,
+        morpheme="",
+        meaning="",
+        baseform="",
+        glosses=[]
+    ):
+        self.morpheme = morpheme
+        self.meaning = meaning
+        self.baseform = baseform
         self.glosses = []
+
+        if isinstance(glosses, six.string_types):
+            self.add_concatenated_glosses(glosses)
+        else:
+            self.add_glosses(glosses)
 
     def add_gloss(self, gloss):
         """
@@ -305,7 +377,8 @@ class Morpheme:
         :return:
         """
         if isinstance(glosses, six.string_types):
-            return self.add_concatenated_glosses(glosses)
+            self.add_concatenated_glosses(glosses)
+            return
 
         for gloss in glosses:
             self.add_gloss(gloss)
