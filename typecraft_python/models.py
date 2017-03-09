@@ -307,8 +307,8 @@ class Morpheme:
 
         Example input: 3SG.FEM.INDEF => add_glosses([3SG, FEM, INDEF])
 
-        :param glosses:
-        :return:
+        :param glosses: A string representing one or more glosses in concatenated form.
+        :return: Void
         """
         if not isinstance(glosses, six.string_types):
             raise Exception("Erroneous input to add_concatenated_glosses: Expected string, got " + type(glosses))
