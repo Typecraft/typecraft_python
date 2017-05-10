@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ElementTree
 from xml.dom import minidom
 
 from typecraft_python.exceptions.parsing import TypecraftParseException
-from typecraft_python.models import Text, Phrase, Word, Morpheme
+from typecraft_python.models import Text, Phrase, Word, Morpheme, GlobalTagSet, GlobalTag
 from typecraft_python.globals import *
 
 """
@@ -246,8 +246,10 @@ class _ParserHelper:
             phrase.translation = translation_tree.text if translation_tree.text is not None else ""
 
         if globaltags_tree is not None:
-            phrase.global_tags = {'id': globaltags_tree.attrib.get('id'),
-                                  'tagset': globaltags_tree.attrib.get('tagset')}
+            phrase.global_tag_set = GlobalTagSet(globaltags_tree.attrib.get('id'), globaltags_tree.attrib.get('tagset'))
+
+        for global_tag in globaltags_tree.findall(ns + 'globaltag'):
+            phrase.add_global_tag(GlobalTag(name=global_tag.text, level=global_tag.attrib.get('level')))
 
         return
 
@@ -521,11 +523,15 @@ class Parser:
         ElementTree.SubElement(phrase_el, 'original').text = phrase.phrase
         ElementTree.SubElement(phrase_el, 'translation').text = phrase.free_translation
         ElementTree.SubElement(phrase_el, 'translation2').text = phrase.free_translation2
-        ElementTree.SubElement(phrase_el, 'globaltags', {'id': '1', 'tagset': 'Default'})
+        global_tags_el = ElementTree.SubElement(phrase_el, 'globaltags', {
+            'id': str(phrase.global_tag_set.id), 'tagset': phrase.global_tag_set.name})
         ElementTree.SubElement(phrase_el, 'comment').text = phrase.comment
 
         for word in phrase:
             Parser.convert_word_to_etree(phrase_el, word)
+
+        for global_tag in phrase.global_tags:
+            ElementTree.SubElement(global_tags_el, 'globaltag', {'level': str(global_tag.level)}).text = global_tag.name
 
     @staticmethod
     def convert_word_to_etree(root, word):

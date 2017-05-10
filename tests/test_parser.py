@@ -2,7 +2,7 @@
 import pytest
 import os
 from typecraft_python.parsing.parser import Parser
-from typecraft_python.models import Text, Phrase, Word
+from typecraft_python.models import Text, Phrase, Word, GlobalTag
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -185,3 +185,36 @@ def test_unicode():
     assert u'æ e i a æ å' in string.decode("utf-8")
 
 
+def test_write_phrase_with_global_tags():
+    text = Text()
+    phrase = Phrase()
+    text.add_phrase(phrase)
+
+    phrase.phrase = "test"
+    phrase.add_global_tag(GlobalTag("informative", 1))
+    phrase.add_global_tag(GlobalTag("timitive", 2))
+
+    result = Parser.write([text])
+
+    assert "<globaltag level=\"1\">informative</globaltag>" in result
+    assert "<globaltag level=\"2\">timitive</globaltag>" in result
+
+
+def test_load_phrase_with_global_tags():
+    # Text with a phrase that has 8 globaltags under the default tagset
+    # The global tags are:
+    # <globaltag level="5">passive+causative+applicative</globaltag>
+    # <globaltag level="7">EXPL+NP+NP+S</globaltag>
+    # <globaltag level="3">resultative</globaltag>
+    # <globaltag level="6">motion</globaltag>
+    # <globaltag level="4">PP:manner</globaltag>
+    # <globaltag level="2">timitive</globaltag>
+    # <globaltag level="1">informative</globaltag>
+    # <globaltag level="0">habitual</globaltag>
+    file = '<typecraft xmlns="http://typecraft.org/typecraft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://typecraft.org/typecraft.xsd"><text id="3361" lang="und"><title>Hello this is a sentence.</title><titleTranslation/><extraMetadata setName="Default"/><body>Hello this is a sentence.<p></p></body><phrase id="421987" valid="VALID"><original>Hello this is a sentence.</original><translation/><translation2/><description/><globaltags id="1" tagset="Default"><globaltag level="5">passive+causative+applicative</globaltag><globaltag level="7">EXPL+NP+NP+S</globaltag><globaltag level="3">resultative</globaltag><globaltag level="6">motion</globaltag><globaltag level="4">PP:manner</globaltag><globaltag level="2">timitive</globaltag><globaltag level="1">informative</globaltag><globaltag level="0">habitual</globaltag></globaltags><word id="421987-1" text="Hello" head="false"><pos>INTRJCT</pos><morpheme text="hello" baseform="hello"/></word><word id="421987-2" text="this" head="false"><pos>PN</pos><morpheme text="this" baseform="this"/></word><word id="421987-3" text="is" head="false"><pos>COP</pos><morpheme text="is" baseform="be" meaning=""><gloss>PRES</gloss></morpheme></word><word id="421987-4" text="a" head="false"><pos>DET</pos><morpheme text="a" meaning="the"><gloss>DEF</gloss></morpheme></word><word id="421987-5" text="sentence" head="false"><pos>N</pos><morpheme text="sentence" baseform="sentence" meaning="sentence@obj:await"/></word><word id="421987-6" text="." head="false"><pos>PUN</pos><morpheme/></word></phrase></text></typecraft>'
+    text = Parser.parse(file)[0]
+
+    phrase = text.phrases[0]
+    assert len(phrase.global_tags) == 8
+    assert phrase.global_tags[0].level == "5"
+    assert phrase.global_tags[0].name == "passive+causative+applicative"
