@@ -196,8 +196,8 @@ def test_write_phrase_with_global_tags():
 
     result = Parser.write([text])
 
-    assert "<globaltag level=\"1\">informative</globaltag>" in result
-    assert "<globaltag level=\"2\">timitive</globaltag>" in result
+    assert "<globaltag level=\"1\">informative</globaltag>" in result.decode("utf-8")
+    assert "<globaltag level=\"2\">timitive</globaltag>" in result.decode("utf-8")
 
 
 def test_load_phrase_with_global_tags():
