@@ -148,6 +148,8 @@ class Phrase:
         phrase="",
         free_translation="",
         free_translation2="",
+        global_tag_set=None,
+        global_tags=None,
         comment="",
         validity=PhraseValidity.EMPTY,
         offset=0,
@@ -161,15 +163,21 @@ class Phrase:
         self.phrase = phrase
         self.free_translation = free_translation
         self.free_translation2 = free_translation2
+        self.global_tag_set = DEFAULT_TAGSET
         self.comment = comment
         self.offset = offset
         self.duration = duration
         self.senses = []
         self.words = []
+        self.global_tags = []
         if words:
             self.add_words(words)
         if senses:
             self.add_senses(senses)
+        if global_tags:
+            self.add_global_tags(global_tags)
+        if global_tag_set:
+            self.set_global_tagset(global_tag_set)
 
         if isinstance(validity, six.string_types):
             if not hasattr(PhraseValidity, validity):
@@ -218,6 +226,42 @@ class Phrase:
         """
         for sense in senses:
             self.add_sense(sense)
+
+    def add_global_tag(self, global_tag):
+        """
+        Adds a global tag to the phrase. Will raise an exception if argument is not a GlobalTag object.
+        :param global_tag: GlobalTag object.
+        :return: Void
+        """
+        if not isinstance(global_tag, GlobalTag):
+            raise Exception("Bad argument to add_global_tag. Expected instance of GlobalTag, got %s"
+                            % str(type(global_tag)))
+        self.global_tags.append(global_tag)
+
+    def add_global_tags(self, global_tags):
+        """
+        Adds an iterable of global tags. Will call `add_global_tag` with each object in the iterable.
+        In turn this might raise an exception if either of the objects in the iterable is not a GlobalTag
+        object.
+        :param global_tags: An iterable.
+        :return: Void
+        """
+        for tag in global_tags:
+            self.add_global_tag(tag)
+
+    def set_global_tagset(self, global_tag_set):
+        """
+        Sets the global tagset of the phrase. Will raise an exception if the passed in argument is not
+        a GlobalTagSet object.
+
+        :param global_tag_set: GlobalTagSet object.
+        :return: Void
+        """
+        if not isinstance(global_tag_set, GlobalTagSet):
+            raise Exception("Bad argument to set_global_tagset. Expected instance of GlobalTagSet, got %s"
+                            % str(type(global_tag_set)))
+
+        self.global_tag_set = global_tag_set
 
     def attributes(self):
         """
@@ -434,3 +478,33 @@ class Morpheme:
 
     def __str__(self):
         return dump(self.to_dict())
+
+
+class GlobalTagSet:
+    """
+    Class representing meta-information about a global tagset.
+    """
+    def __init__(
+        self,
+        id=1,
+        name="Default"
+    ):
+        self.id = id
+        self.name = name
+
+
+class GlobalTag:
+    """
+    Class representing a global tag.
+    """
+    def __init__(
+        self,
+        name="",
+        level=0,
+        description=""
+    ):
+        self.name = name
+        self.level = level
+        self.description = description  # Currently unused, but exists to mirror the implementation in TC-Core.
+
+DEFAULT_TAGSET = GlobalTagSet(1, "DEFAULT")
