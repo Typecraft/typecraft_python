@@ -1,6 +1,7 @@
 import pytest
 
-from typecraft_python.models import Text, Phrase, Word, Morpheme, PhraseValidity
+from typecraft_python.models import Text, Phrase, Word, Morpheme, PhraseValidity, GlobalTag, GlobalTagSet, \
+    DEFAULT_TAGSET
 
 
 def test_models_exist():
@@ -382,3 +383,61 @@ def test_to_str():
     mrph = Morpheme()
     morpheme = str(mrph)
 
+
+def test_phrase_add_global_tag():
+    phrase = Phrase()
+    phrase.add_global_tag(GlobalTag("name", 1, ""))
+
+    assert len(phrase.global_tags) == 1
+    assert phrase.global_tags[0].name == "name"
+    assert phrase.global_tags[0].level == 1
+
+
+def test_phrase_add_global_tag_bad_argument_raises_exception():
+    phrase = Phrase()
+
+    with pytest.raises(Exception):
+        phrase.add_global_tag("tag")
+    with pytest.raises(Exception):
+        phrase.add_global_tag(0)
+    with pytest.raises(Exception):
+        phrase.add_global_tag({'name': 'name', 'level': 1})
+    with pytest.raises(Exception):
+        phrase.add_global_tag(['name', 2])
+
+
+def test_phrase_add_global_tags():
+    phrase = Phrase()
+    phrase.add_global_tags([GlobalTag("name", 1, ""), GlobalTag("name2", 2, "")])
+
+    assert len(phrase.global_tags) == 2
+    assert phrase.global_tags[0].name == "name"
+    assert phrase.global_tags[0].level == 1
+
+    assert phrase.global_tags[1].name == "name2"
+    assert phrase.global_tags[1].level == 2
+
+
+def test_phrase_add_global_tags_bad_argument_raises_exception():
+    phrase = Phrase()
+
+    with pytest.raises(Exception):
+        phrase.add_global_tags(["name"])
+
+    with pytest.raises(Exception):
+        phrase.add_global_tags(["name"])
+
+
+def test_phrase_set_global_tagset():
+    phrase = Phrase()
+
+    phrase.set_global_tagset(GlobalTagSet(2, "Epic"))
+    assert phrase.global_tag_set != DEFAULT_TAGSET
+    assert phrase.global_tag_set.id == 2
+    assert phrase.global_tag_set.name == "Epic"
+
+
+def test_phrase_has_default_tagset():
+    phrase = Phrase()
+
+    assert phrase.global_tag_set == DEFAULT_TAGSET
