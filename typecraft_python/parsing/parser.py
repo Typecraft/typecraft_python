@@ -248,8 +248,8 @@ class _ParserHelper:
         if globaltags_tree is not None:
             phrase.global_tag_set = GlobalTagSet(globaltags_tree.attrib.get('id'), globaltags_tree.attrib.get('tagset'))
 
-        for global_tag in globaltags_tree.findall(ns + 'globaltag'):
-            phrase.add_global_tag(GlobalTag(name=global_tag.text, level=global_tag.attrib.get('level')))
+            for global_tag in globaltags_tree.findall(ns + 'globaltag'):
+                phrase.add_global_tag(GlobalTag(name=global_tag.text, level=global_tag.attrib.get('level')))
 
         return
 
