@@ -525,7 +525,7 @@ class Parser:
         ElementTree.SubElement(phrase_el, 'translation2').text = phrase.free_translation2
         global_tags_el = ElementTree.SubElement(phrase_el, 'globaltags', {
             'id': str(phrase.global_tag_set.id), 'tagset': phrase.global_tag_set.name})
-        ElementTree.SubElement(phrase_el, 'comment').text = phrase.comment
+        ElementTree.SubElement(phrase_el, 'description').text = phrase.comment
 
         for word in phrase:
             Parser.convert_word_to_etree(phrase_el, word)
