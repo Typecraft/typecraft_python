@@ -233,6 +233,7 @@ class _ParserHelper:
 
         id = phrase_root.attrib.get('id')
         validity = phrase_root.attrib.get('valid')
+        description = phrase_root.find(ns + 'description')
         translation_tree = phrase_root.find(ns + 'translation')
         globaltags_tree = phrase_root.find(ns + 'globaltags')
 
@@ -250,6 +251,9 @@ class _ParserHelper:
 
             for global_tag in globaltags_tree.findall(ns + 'globaltag'):
                 phrase.add_global_tag(GlobalTag(name=global_tag.text, level=global_tag.attrib.get('level')))
+
+        if description is not None:
+            phrase.comment = description.text if description is not None else ""
 
         return
 
