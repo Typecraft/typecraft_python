@@ -409,7 +409,7 @@ class Morpheme:
         """
         Adds a gloss in string-form to this morpheme.
 
-        :param gloss:
+        :param gloss:serialize_new_user
         :return:
         """
         self.glosses.append(gloss)
@@ -437,7 +437,7 @@ class Morpheme:
         :return: Void
         """
         if not isinstance(glosses, six.string_types):
-            raise Exception("Erroneous input to add_concatenated_glosses: Expected string, got " + type(glosses))
+            raise Exception("Erroneous input to add_concatenated_glosses: Expected string, got " + str(type(glosses)))
 
         for gloss in glosses.split("."):
             self.add_gloss(gloss)
