@@ -507,4 +507,5 @@ class GlobalTag:
         self.level = level
         self.description = description  # Currently unused, but exists to mirror the implementation in TC-Core.
 
+
 DEFAULT_TAGSET = GlobalTagSet(1, "DEFAULT")

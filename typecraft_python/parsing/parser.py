@@ -1,9 +1,9 @@
 import xml.etree.ElementTree as ElementTree
 from xml.dom import minidom
 
+from globals import STRICT_MODE
 from typecraft_python.exceptions.parsing import TypecraftParseException
 from typecraft_python.models import Text, Phrase, Word, Morpheme, GlobalTagSet, GlobalTag
-from typecraft_python.globals import *
 
 """
 The typecraft namespace
@@ -43,7 +43,6 @@ class _ParserHelper:
         Empty constructor
         """
         pass
-
 
     @staticmethod
     def check_text_for_conformity(text_root):
