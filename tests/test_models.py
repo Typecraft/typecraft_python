@@ -49,8 +49,8 @@ def test_init_phrase():
     assert phrase is not None
 
     assert phrase.phrase is ""
-    assert phrase.free_translation is ""
-    assert phrase.free_translation2 is ""
+    assert phrase.translation is ""
+    assert phrase.translation2 is ""
     assert phrase.comment is ""
     assert phrase.offset is 0
     assert phrase.duration is 0
@@ -60,8 +60,8 @@ def test_init_phrase():
     word = Word()
     phrase2 = Phrase(
         phrase="Ola liker katter",
-        free_translation="Ola likes cats",
-        free_translation2="Ola s'aime chiennes",
+        translation="Ola likes cats",
+        translation2="Ola s'aime chiennes",
         comment="Comment",
         offset=5,
         duration=0,
@@ -69,8 +69,8 @@ def test_init_phrase():
     )
 
     assert phrase2.phrase == "Ola liker katter"
-    assert phrase2.free_translation == "Ola likes cats"
-    assert phrase2.free_translation2 == "Ola s'aime chiennes"
+    assert phrase2.translation == "Ola likes cats"
+    assert phrase2.translation2 == "Ola s'aime chiennes"
     assert phrase2.comment == "Comment"
     assert phrase2.offset == 5
     assert phrase2.duration == 0

@@ -234,6 +234,7 @@ class _ParserHelper:
         validity = phrase_root.attrib.get('valid')
         description = phrase_root.find(ns + 'description')
         translation_tree = phrase_root.find(ns + 'translation')
+        translation2_tree = phrase_root.find(ns + 'translation2')
         globaltags_tree = phrase_root.find(ns + 'globaltags')
 
         if id is not None:
@@ -244,6 +245,9 @@ class _ParserHelper:
 
         if translation_tree is not None:
             phrase.translation = translation_tree.text if translation_tree.text is not None else ""
+
+        if translation2_tree is not None:
+            phrase.translation2 = translation2_tree.text if translation2_tree.text is not None else ""
 
         if globaltags_tree is not None:
             phrase.global_tag_set = GlobalTagSet(globaltags_tree.attrib.get('id'), globaltags_tree.attrib.get('tagset'))
@@ -524,8 +528,8 @@ class Parser:
         phrase_el = ElementTree.SubElement(root, 'phrase', {'valid': 'UNKNOWN'})
 
         ElementTree.SubElement(phrase_el, 'original').text = phrase.phrase
-        ElementTree.SubElement(phrase_el, 'translation').text = phrase.free_translation
-        ElementTree.SubElement(phrase_el, 'translation2').text = phrase.free_translation2
+        ElementTree.SubElement(phrase_el, 'translation').text = phrase.translation
+        ElementTree.SubElement(phrase_el, 'translation2').text = phrase.translation2
         global_tags_el = ElementTree.SubElement(phrase_el, 'globaltags', {
             'id': str(phrase.global_tag_set.id), 'tagset': phrase.global_tag_set.name})
         ElementTree.SubElement(phrase_el, 'description').text = phrase.comment

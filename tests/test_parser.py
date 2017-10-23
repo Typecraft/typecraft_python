@@ -218,3 +218,27 @@ def test_load_phrase_with_global_tags():
     assert len(phrase.global_tags) == 8
     assert phrase.global_tags[0].level == "5"
     assert phrase.global_tags[0].name == "passive+causative+applicative"
+
+
+def test_load_and_write_preserves_translations():
+    file = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <typecraft xsi:schemaLocation="http://typecraft.org/typecraft.xsd" xmlns="http://typecraft.org/typecraft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <text id="3123" lang="aka">
+            <title>Political discourse on Ghanaian radio stations (1)</title>
+            <titleTranslation></titleTranslation>
+            <extraMetadata />
+            <body />
+            <phrase id="1">
+                <original>Dette er en test</original> 
+                <translation>This is a test</translation>
+                <translation2>C'est un test</translation2>
+            </phrase>
+        </text>
+    </typecraft>
+    """
+    text = Parser.parse(file)[0]
+
+    assert text.phrases[0].translation == "This is a test"
+    dumped = Parser.write([text])
+    assert 'This is a test' in dumped.decode()
+    assert 'C\'est un test' in dumped.decode()

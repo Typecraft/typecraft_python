@@ -146,8 +146,8 @@ class Phrase:
     def __init__(
         self,
         phrase="",
-        free_translation="",
-        free_translation2="",
+        translation="",
+        translation2="",
         global_tag_set=None,
         global_tags=None,
         comment="",
@@ -161,8 +161,8 @@ class Phrase:
         Constructor.
         """
         self.phrase = phrase
-        self.free_translation = free_translation
-        self.free_translation2 = free_translation2
+        self.translation = translation
+        self.translation2 = translation2
         self.global_tag_set = DEFAULT_TAGSET
         self.comment = comment
         self.offset = offset
@@ -270,8 +270,8 @@ class Phrase:
         """
         return {
             'phrase': self.phrase,
-            'free_translation': self.free_translation,
-            'free_translation2': self.free_translation2,
+            'translation': self.translation,
+            'translation2': self.translation2,
             'comment': self.comment,
             'offset': str(self.offset),
             'duration': str(self.duration),
@@ -281,8 +281,8 @@ class Phrase:
     def to_dict(self):
         return {
             'phrase': self.phrase,
-            'free_translation': self.free_translation,
-            'free_translation2': self.free_translation2,
+            'translation': self.translation,
+            'translation2': self.translation2,
             'comment': self.comment,
             'offset': str(self.offset),
             'duration': str(self.duration),
