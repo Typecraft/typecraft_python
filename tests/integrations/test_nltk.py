@@ -26,3 +26,21 @@ class TestTokenize(object):
         with pytest.raises(Exception):
             tokenize_phrase(phrase)
 
+
+class TestPosTag(object):
+
+    @classmethod
+    def setup_class(cls):
+        pass
+
+    def test_pos_phrase(self):
+        phrase = Phrase("This is a nice phrase.")
+        tokenize_phrase(phrase)
+        pos_tag_phrase(phrase)
+
+        for word in phrase:
+            assert word.pos != ''
+
+    def test_pos_phrase_without_words_does_nothing(self):
+        pass
+
