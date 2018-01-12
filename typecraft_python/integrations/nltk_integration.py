@@ -4,11 +4,11 @@ import six
 
 from typecraft_python.models import Phrase, Word
 
-# try:
-import nltk
-# except ImportError:
-#    nltk = None
-#    sys.stderr.write("Unable to load NLTK, are you sure it is installed?")
+try:
+    import nltk
+except ImportError:
+    nltk = None
+    sys.stderr.write("Unable to load NLTK, are you sure it is installed?")
 
 
 def raw_phrase_to_tokenized_phrase(raw_phrase):
