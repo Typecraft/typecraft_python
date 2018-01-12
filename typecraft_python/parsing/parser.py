@@ -4,6 +4,8 @@ from xml.dom import minidom
 from typecraft_python.globals import STRICT_MODE
 from typecraft_python.exceptions.parsing import TypecraftParseException
 from typecraft_python.models import Text, Phrase, Word, Morpheme, GlobalTagSet, GlobalTag
+from typecraft_python.models import Text, Phrase, Word, Morpheme, GlobalTagSet, GlobalTag, PhraseValidity
+from typecraft_python.globals import *
 
 """
 The typecraft namespace
@@ -180,7 +182,7 @@ class _ParserHelper:
         lang = text_root.attrib.get('lang')
 
         if body is not None:
-            text.body = body
+            text.rich_text = body.text
 
         if id is not None:
             text.id = id
@@ -241,7 +243,12 @@ class _ParserHelper:
             phrase.id = id
 
         if validity is not None:
-            phrase.validity = validity
+            if isinstance(validity, int):
+                phrase.validity = validity
+            elif hasattr(PhraseValidity, validity):
+                phrase.validity = getattr(PhraseValidity, validity)
+            else:
+                phrase.validity = PhraseValidity.UNKNOWN
 
         if translation_tree is not None:
             phrase.translation = translation_tree.text if translation_tree.text is not None else ""
@@ -518,8 +525,19 @@ class Parser:
         ElementTree.SubElement(text_el, 'titleTranslation').text = text.title_translation
         ElementTree.SubElement(text_el, 'body').text = text.rich_text
 
+        Parser.convert_text_metadata_to_etree(text_el, text)
+
         for phrase in text:
             Parser.convert_phrase_to_etree(text_el, phrase)
+
+    @staticmethod
+    def convert_text_metadata_to_etree(root, text):
+        if not text.metadata or not isinstance(text.metadata, dict) or len(text.metadata) == 0:
+            return
+
+        metadata_el = ElementTree.SubElement(root, 'extraMetadata')
+        for key, val in text.metadata.items():
+            ElementTree.SubElement(metadata_el, 'metadata', {'name': key}).text = val
 
     @staticmethod
     def convert_phrase_to_etree(root, phrase):

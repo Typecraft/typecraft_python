@@ -2,7 +2,7 @@
 import pytest
 import os
 from typecraft_python.parsing.parser import Parser
-from typecraft_python.models import Text, Phrase, Word, GlobalTag
+from typecraft_python.models import Text, Phrase, Word, GlobalTag, PhraseValidity, Morpheme
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -242,3 +242,59 @@ def test_load_and_write_preserves_translations():
     dumped = Parser.write([text])
     assert 'This is a test' in dumped.decode()
     assert 'C\'est un test' in dumped.decode()
+
+
+def test_write_and_load_produces_semantically_similar_results():
+    # We create a text with more or less all levels of annotation
+    # to ensure we get everything
+    text = Text()
+    text.language = "nob"
+    text.metadata = {
+        'Source link': 'test@example.com'
+    }
+    text.rich_text = '<phrase>hello</phrase>'
+
+    phrase = Phrase()
+    phrase.phrase = 'This is a nice phrase'
+    phrase.validity = PhraseValidity.UNKNOWN
+    phrase.add_global_tag(GlobalTag('SAS', 'NP+PP'))
+    phrase.comment = 'Some text comment'
+    phrase.translation = 'Dette er en fin frase'
+    phrase.translation2 = 'Das ist ein schoner Satz'
+
+    word = Word()
+    word.word = 'This'
+    word.pos = 'DET'
+
+    morpheme = Morpheme()
+    morpheme.morpheme = 'This'
+    morpheme.add_gloss('DET')
+    morpheme.baseform = 'This'
+    morpheme.meaning = 'This'
+
+    word.add_morpheme(morpheme)
+    phrase.add_word(word)
+    text.add_phrase(phrase)
+
+    string_representation = Parser.write([text])
+    new_texts = Parser.parse(string_representation)
+    new_text = new_texts[0]
+    assert new_text.language == "nob"
+    assert new_text.metadata == {'Source link': 'test@example.com'}
+    assert new_text.rich_text == '<phrase>hello</phrase>'
+    assert len(new_text.phrases) == 1
+    new_phrase = new_text.phrases[0]
+    assert new_phrase.phrase == 'This is a nice phrase'
+    assert new_phrase.validity == PhraseValidity.UNKNOWN
+    assert new_phrase.comment == 'Some text comment'
+    assert new_phrase.translation == 'Dette er en fin frase'
+    assert new_phrase.translation2 == 'Das ist ein schoner Satz'
+    assert len(new_phrase.words) == 1
+    new_word = new_phrase.words[0]
+    assert new_word.word == 'This'
+    assert new_word.pos == 'DET'
+    assert len(new_word.morphemes)
+    new_morpheme = new_word.morphemes[0]
+    assert new_morpheme.morpheme == 'This'
+    assert new_morpheme.baseform == 'This'
+    assert new_morpheme.meaning == 'This'
