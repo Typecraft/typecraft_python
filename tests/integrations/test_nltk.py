@@ -3,6 +3,11 @@ from typecraft_python.integrations.nltk_integration import tokenize_phrase, pos_
     raw_phrase_to_tokenized_phrase
 from typecraft_python.models import Phrase
 
+# Ensure base modules is downloaded
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
 
 class TestTokenize(object):
 
