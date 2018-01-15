@@ -1,12 +1,13 @@
 import pytest
 from typecraft_python.integrations.nltk_integration import tokenize_phrase, pos_tag_phrase, \
-    raw_phrase_to_tokenized_phrase
+    raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase
 from typecraft_python.models import Phrase
 
 # Ensure base modules is downloaded
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
 
 
 class TestTokenize(object):
@@ -65,3 +66,36 @@ class TestPosTag(object):
     def test_pos_phrase_without_words_does_nothing(self):
         pass
 
+
+class TestNamedEntities(object):
+
+    @classmethod
+    def setup_class(cls):
+        pass
+
+    def test_sentence_without_named_entities_adds_nothing(self):
+        phrase = raw_phrase_to_tokenized_phrase("This has no named entities.")
+        find_named_entities_for_phrase(phrase)
+
+        assert 'Named entities' not in phrase.comment
+
+    def test_sentence_with_named_entity_binary(self):
+        phrase = raw_phrase_to_tokenized_phrase("Mike is a named entity")
+        find_named_entities_for_phrase(phrase, binary=True)
+
+        assert 'Named entities' in phrase.comment
+        assert 'NE: Mike' in phrase.comment
+
+    def test_sentence_with_named_entity_non_binary(self):
+        phrase = raw_phrase_to_tokenized_phrase("Mike is a named entity")
+        find_named_entities_for_phrase(phrase)
+        assert 'Named entities' in phrase.comment
+        assert 'PERSON: Mike' in phrase.comment
+
+    def test_sentence_with_multiple_entities(self):
+        phrase = raw_phrase_to_tokenized_phrase("Mike went travelling to Australia.")
+        find_named_entities_for_phrase(phrase, binary=True)
+        assert 'Named entities' in phrase.comment
+        assert 'NE: Mike' in phrase.comment
+        assert 'NE: Australia' in phrase.comment
+        print(phrase.comment)
