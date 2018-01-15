@@ -39,6 +39,37 @@ def raw_phrase_to_tokenized_phrase(raw_phrase):
     return tokenize_phrase(Phrase(raw_phrase))
 
 
+def raw_text_to_phrases(raw_phrases, language='english'):
+    """
+    Takes a raw string representation of one or more phrases, then sentence-tokenizes them.
+    Typecraft Phrase objects are then instantiated with each.
+
+    The supported languages can be found at:
+    https://github.com/nltk/nltk_data/blob/gh-pages/packages/tokenizers/punkt.xml
+
+    :param raw_phrases: A text with one or more phrases in raw form.
+    :param language: The language of the phrases.
+    :return: A list of Phrase objects
+    """
+    tokenized = nltk.sent_tokenize(raw_phrases, language)
+    return [Phrase(phrase) for phrase in tokenized]
+
+
+def raw_text_to_tokenized_phrases(raw_phrases, language='english'):
+    """
+    Takes a raw string representation of one or more phrase, and sentence-tokenizes them.
+    Typecraft Phrase objects are then instantiated for each, which is further more word-tokenized.
+
+    The supported languages can be found at:
+    https://github.com/nltk/nltk_data/blob/gh-pages/packages/tokenizers/punkt.xml
+    :param raw_phrases: A text with one or more phrases in raw form.
+    :param language: The language of the phrases.
+    :return:
+    """
+    tokenized = nltk.sent_tokenize(raw_phrases, language)
+    return [tokenize_phrase(Phrase(phrase)) for phrase in tokenized]
+
+
 def tokenize_phrase(phrase):
     """
     Tokenizes a phrase using the nltk tokenizer.

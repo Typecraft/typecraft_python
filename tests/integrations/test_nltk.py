@@ -1,6 +1,6 @@
 import pytest
 from typecraft_python.integrations.nltk_integration import tokenize_phrase, pos_tag_phrase, \
-    raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase
+    raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase, raw_text_to_phrases, raw_text_to_tokenized_phrases
 from typecraft_python.models import Phrase
 
 # Ensure base modules is downloaded
@@ -98,4 +98,32 @@ class TestNamedEntities(object):
         assert 'Named entities' in phrase.comment
         assert 'NE: Mike' in phrase.comment
         assert 'NE: Australia' in phrase.comment
-        print(phrase.comment)
+
+
+class TestSentTokenize(object):
+
+    @classmethod
+    def setup_class(cls):
+        pass
+
+    def test_raw_text_to_phrases(self):
+        text = """
+            This text contains two sentences. They are both very nice indeed.
+        """
+        phrases = raw_text_to_phrases(text)
+        assert len(phrases) == 2
+        assert isinstance(phrases[0], Phrase)
+        assert isinstance(phrases[1], Phrase)
+        assert len(phrases[0].words) == 0
+        assert len(phrases[1].words) == 0
+
+    def test_raw_text_to_tokenized_phrases(self):
+        text = """
+            This text contains two sentences. They are both very nice indeed.
+        """
+        phrases = raw_text_to_tokenized_phrases(text)
+        assert len(phrases) == 2
+        assert isinstance(phrases[0], Phrase)
+        assert isinstance(phrases[1], Phrase)
+        assert len(phrases[0].words) == 6
+        assert len(phrases[1].words) == 7
