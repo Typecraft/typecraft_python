@@ -113,6 +113,22 @@ class Text:
         if key in self.metadata:
             del self.metadata[key]
 
+    def clear_phrases(self):
+        """
+        Clears all phrases of the text.
+
+        :return:
+        """
+        self.phrases = []
+
+    def clear_metadata(self):
+        """
+        Clears all metadata of the text.
+
+        :return:
+        """
+        self.metadata = {}
+
     def clear_tags(self):
         """
         Clears all tags in the text. Specifically, call clear_tags on all the phrases of the text
@@ -316,6 +332,14 @@ class Phrase:
         """
         self.global_tags = list(map(lambda x: x.level != global_tag_level, self.global_tags))
 
+    def clear_words(self):
+        """
+        Clears all words in phrase. This method does not touch on the "phrase" variable, but rather
+        the Word children objects.
+        :return:
+        """
+        self.words = []
+
     def clear_tags(self):
         """
         Clears all tags in phrase. This involves clearing all words and their constituent morphemes
@@ -405,7 +429,7 @@ class Word:
         Adds an iterable of morphemes to this word.
 
         :param morphemes:
-        :return: Nothing
+        :return: void
         """
         for morpheme in morphemes:
             self.add_morpheme(morpheme)
@@ -415,9 +439,16 @@ class Word:
         Removes a morpheme from the word if it exists.
 
         :param morpheme:
-        :return:
+        :return: void
         """
         self.morphemes.remove(morpheme)
+
+    def clear_morphemes(self):
+        """
+        Clears all morphemes of the word.
+        :return: void
+        """
+        self.morphemes = []
 
     def clear_tags(self):
         """
