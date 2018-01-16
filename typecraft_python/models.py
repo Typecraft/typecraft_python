@@ -95,6 +95,24 @@ class Text:
         else:
             raise Exception("Wrong argument to add_metadata. Expected a key-value pair as argument one and two")
 
+    def remove_phrase(self, phrase):
+        """
+        Removes a phrase from the text if it exists.
+
+        :param phrase:
+        :return:
+        """
+        self.phrases.remove(phrase)
+
+    def remove_metadata(self, key):
+        """
+        Deletes a metadata key from the texts metadata dict if it exists.
+        :param key:
+        :return:
+        """
+        if key in self.metadata:
+            del self.metadata[key]
+
     def attributes(self):
         """
         Return all non-children attributes of the text.
@@ -263,6 +281,33 @@ class Phrase:
 
         self.global_tag_set = global_tag_set
 
+    def remove_word(self, word):
+        """
+        Removes a word from the phrase if it exists.
+
+        :param word:
+        :return:
+        """
+        self.words.remove(word)
+
+    def remove_global_tag(self, global_tag):
+        """
+        Removes a global tag by reference.
+
+        :param global_tag:
+        :return:
+        """
+        self.global_tags.remove(global_tag)
+
+    def remove_global_tag_by_level(self, global_tag_level):
+        """
+        Removes a global tag by the id of the global tag by level.
+
+        :param global_tag_level:
+        :return:
+        """
+        self.global_tags = list(map(lambda x: x.level != global_tag_level, self.global_tags))
+
     def attributes(self):
         """
         Gets all non-children attributes of the phrase.
@@ -343,6 +388,15 @@ class Word:
         """
         for morpheme in morphemes:
             self.add_morpheme(morpheme)
+
+    def remove_morpheme(self, morpheme):
+        """
+        Removes a morpheme from the word if it exists.
+
+        :param morpheme:
+        :return:
+        """
+        self.morphemes.remove(morpheme)
 
     def attributes(self):
         """
@@ -456,6 +510,15 @@ class Morpheme:
             return ".".join(sorted(self.glosses))
         else:
             return ".".join(self.glosses)
+
+    def remove_gloss(self, gloss):
+        """
+        Removes a gloss from the morpheme if it exists.
+
+        :param gloss:
+        :return:
+        """
+        self.glosses.remove(gloss)
 
     def attributes(self):
         """
