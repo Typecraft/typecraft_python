@@ -1,13 +1,16 @@
 import pytest
 from typecraft_python.integrations.nltk_integration import tokenize_phrase, pos_tag_phrase, \
-    raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase, raw_text_to_phrases, raw_text_to_tokenized_phrases
-from typecraft_python.models import Phrase
+    raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase, raw_text_to_phrases, raw_text_to_tokenized_phrases, \
+    lemmatize_word, lemmatize_phrase
+from typecraft_python.models import Phrase, Word, Morpheme
 
 # Ensure base modules is downloaded
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
+nltk.download('words')
+nltk.download('wordnet')
 
 
 class TestTokenize(object):
@@ -127,3 +130,34 @@ class TestSentTokenize(object):
         assert isinstance(phrases[1], Phrase)
         assert len(phrases[0].words) == 6
         assert len(phrases[1].words) == 7
+
+
+class TestLemmatize(object):
+
+    @classmethod
+    def setup_class(cls):
+        pass
+
+    def test_lemmatize_word_morpheme_exists(self):
+        morpheme = Morpheme('Cars')
+        word = Word('Cars', morphemes=[morpheme])
+        lemmatize_word(word)
+
+        assert morpheme.baseform == 'car'
+
+    def test_lemmatize_word_morpheme_does_not_exist(self):
+        word = Word('Cars')
+        lemmatize_word(word)
+
+        assert len(word.morphemes) == 1
+
+        morpheme = word.morphemes[0]
+        assert morpheme.baseform == 'car'
+
+    def test_lemmatize_phrase(self):
+        phrase = raw_phrase_to_tokenized_phrase('Robert has many cars in his three houses.')
+        lemmatize_phrase(phrase)
+
+        for word in phrase:
+            morpheme = word.morphemes[0]
+            assert morpheme.baseform is not ''
