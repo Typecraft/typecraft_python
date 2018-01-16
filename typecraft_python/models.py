@@ -113,6 +113,14 @@ class Text:
         if key in self.metadata:
             del self.metadata[key]
 
+    def clear_tags(self):
+        """
+        Clears all tags in the text. Specifically, call clear_tags on all the phrases of the text
+        :return:
+        """
+        for phrase in self.phrases:
+            phrase.clear_tags()
+
     def attributes(self):
         """
         Return all non-children attributes of the text.
@@ -308,6 +316,19 @@ class Phrase:
         """
         self.global_tags = list(map(lambda x: x.level != global_tag_level, self.global_tags))
 
+    def clear_tags(self):
+        """
+        Clears all tags in phrase. This involves clearing all words and their constituent morphemes
+        for any tag, as well as all global tags and sense tags for the phrase.
+
+        :return: void
+        """
+        for word in self.words:
+            word.clear_tags()
+
+        self.global_tags = []
+        self.senses = []
+
     def attributes(self):
         """
         Gets all non-children attributes of the phrase.
@@ -383,7 +404,7 @@ class Word:
         """
         Adds an iterable of morphemes to this word.
 
-        :param morpheme:
+        :param morphemes:
         :return: Nothing
         """
         for morpheme in morphemes:
@@ -397,6 +418,17 @@ class Word:
         :return:
         """
         self.morphemes.remove(morpheme)
+
+    def clear_tags(self):
+        """
+        Clears all tags of the word. This means resetting the pos tag
+        as well as any morphemes gloss tag.
+
+        :return: void
+        """
+        self.pos = ""
+        for morpheme in self.morphemes:
+            morpheme.clear_tags()
 
     def attributes(self):
         """
@@ -519,6 +551,23 @@ class Morpheme:
         :return:
         """
         self.glosses.remove(gloss)
+
+    def clear_glosses(self):
+        """
+        Removes all glosses from the morpheme.
+
+        :return: void
+        """
+        self.glosses = []
+
+    def clear_tags(self):
+        """
+        Clears the morpheme for all tags. This is the same as clearing for glosses,
+        i.e. this method is an alias for clear_glosses.
+
+        :return: void
+        """
+        self.clear_glosses()
 
     def attributes(self):
         """
