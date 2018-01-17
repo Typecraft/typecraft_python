@@ -212,6 +212,7 @@ class Phrase:
         self.senses = []
         self.words = []
         self.global_tags = []
+
         if words:
             self.add_words(words)
         if senses:
