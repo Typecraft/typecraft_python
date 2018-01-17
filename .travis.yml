@@ -11,9 +11,7 @@ deploy:
   user: trmd
 env:
 - TOXENV=py36
-- TOXENV=py35
 - TOXENV=py34
-- TOXENV=py33
 - TOXENV=py27
 install: pip install -U tox
 language: python
