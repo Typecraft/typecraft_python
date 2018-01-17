@@ -1,4 +1,5 @@
 import pytest
+import six
 
 from typecraft_python.models import Text, Phrase, Word, Morpheme, PhraseValidity, GlobalTag, GlobalTagSet, \
     DEFAULT_TAGSET
@@ -43,10 +44,10 @@ class TestModelsGeneral(object):
         word_str = str(word)
         morpheme_str = str(morpheme)
 
-        assert isinstance(text_str, basestring)
-        assert isinstance(phrase_str, basestring)
-        assert isinstance(word_str, basestring)
-        assert isinstance(morpheme_str, basestring)
+        assert isinstance(text_str, six.string_types)
+        assert isinstance(phrase_str, six.string_types)
+        assert isinstance(word_str, six.string_types)
+        assert isinstance(morpheme_str, six.string_types)
 
 
 class TestText(object):
