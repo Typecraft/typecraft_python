@@ -1,5 +1,8 @@
+import pytest
+
 from typecraft_python.models import Phrase
-from typecraft_python.parsing.convenience import detokenize, parse_slash_separated_phrase, parse_bar_separated_phrase
+from typecraft_python.parsing.convenience import detokenize, parse_slash_separated_phrase, parse_bar_separated_phrase, \
+    words_to_phrase, word_pos_tuples_to_phrase
 
 
 class TestDetokenize(object):
@@ -113,3 +116,65 @@ class TestParseBarSeparated(object):
 
         assert parsed.words[5].word == "."
         assert parsed.words[5].pos == "$."
+
+
+class TestWordToPhrase(object):
+
+    def test_words_to_phrase(self):
+        words = ['Hello', 'this', 'is', 'nice', '.']
+        phrase = words_to_phrase(words)
+        assert isinstance(phrase, Phrase)
+        assert len(phrase.words) == 5
+        assert phrase.words[0].word == "Hello"
+        assert phrase.words[1].word == "this"
+        assert phrase.words[2].word == "is"
+        assert phrase.words[3].word == "nice"
+        assert phrase.words[4].word == "."
+
+    def test_words_to_phrase_bad_input(self):
+        with pytest.raises(Exception):
+            words_to_phrase(2)
+
+        class Something():
+            pass
+        with pytest.raises(Exception):
+            words_to_phrase(Something())
+        with pytest.raises(Exception):
+            words_to_phrase(Something)
+
+
+class TestWordPosTuplesToPhrase(object):
+    def test_words_pos_tuples_to_phrase(self):
+        word_pos_tuples = [
+            ('Hello', 'pos1'),
+            ('this', 'pos2'),
+            ('is', 'pos3'),
+            ('nice', 'pos4'),
+            ('.', 'pos5'),
+        ]
+        phrase = word_pos_tuples_to_phrase(word_pos_tuples)
+        assert isinstance(phrase, Phrase)
+        assert len(phrase.words) == 5
+        assert phrase.words[0].word == "Hello"
+        assert phrase.words[1].word == "this"
+        assert phrase.words[2].word == "is"
+        assert phrase.words[3].word == "nice"
+        assert phrase.words[4].word == "."
+
+        assert phrase.words[0].pos == "pos1"
+        assert phrase.words[1].pos == "pos2"
+        assert phrase.words[2].pos == "pos3"
+        assert phrase.words[3].pos == "pos4"
+        assert phrase.words[4].pos == "pos5"
+
+    def test_words_pos_tuples_to_phrase_bad_input(self):
+        with pytest.raises(Exception):
+            word_pos_tuples_to_phrase(2)
+
+        class Something():
+            pass
+        with pytest.raises(Exception):
+            word_pos_tuples_to_phrase(Something())
+        with pytest.raises(Exception):
+            word_pos_tuples_to_phrase(Something)
+

@@ -25,6 +25,36 @@ def detokenize(tokens):
     return "".join([" " + i if not i.startswith("'") and i not in string.punctuation else i for i in tokens]).strip()
 
 
+def words_to_phrase(words):
+    """
+    Takes a list/iterable of tokens/words, and returns an instantiated phrase from the
+    words.
+
+    :param words: A list or iterable of words
+    :return: A Phrase object instantiated from the words.
+    """
+    if not hasattr(words, '__iter__'):
+        raise Exception("Invalid argument to words_to_phrase, expected iterable")
+
+    return Phrase(detokenize(words), words=[Word(word) for word in words])
+
+
+def word_pos_tuples_to_phrase(word_pos_iterable):
+    """
+    Take a list of (word, pos) tuples, and returns an instantiated phrase from them.
+
+    :param word_pos_iterable: An iterable of (word, pos) tuples.
+    :return: A Phrase object instantiated from the words and pos tags.
+    """
+    if not hasattr(word_pos_iterable, '__iter__'):
+        raise Exception("Invalid argument to words_to_phrase, expected iterable")
+
+    return Phrase(
+        detokenize([word for word,_ in word_pos_iterable]),
+        words=[Word(word, pos=pos) for word, pos in word_pos_iterable]
+    )
+
+
 def parse_slash_separated_phrase(slash_separated_phrase):
     """
     Parses a slash separated phrase into a Phrase object.
@@ -42,13 +72,7 @@ def parse_slash_separated_phrase(slash_separated_phrase):
     slash_tokenized = map(lambda x: x.split("/"), space_tokenized)
     # Unpack arguments to zip, which will return an iterator with two elements
 
-    word_objs = []
-    words = []
-    for word, pos in slash_tokenized:
-        word_objs.append(Word(word, pos=pos))
-        words.append(word)
-
-    return Phrase(detokenize(words), words=word_objs)
+    return word_pos_tuples_to_phrase(slash_tokenized)
 
 
 def parse_bar_separated_phrase(bar_separated_phrase):
@@ -68,10 +92,5 @@ def parse_bar_separated_phrase(bar_separated_phrase):
     bar_tokenized = map(lambda x: x.split("|"), space_tokenized)
     # Unpack arguments to zip, which will return an iterator with two elements
 
-    word_objs = []
-    words = []
-    for word, pos in bar_tokenized:
-        word_objs.append(Word(word, pos=pos))
-        words.append(word)
+    return word_pos_tuples_to_phrase(bar_tokenized)
 
-    return Phrase(detokenize(words), words=word_objs)
