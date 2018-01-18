@@ -69,8 +69,7 @@ def parse_slash_separated_phrase(slash_separated_phrase):
     assert isinstance(slash_separated_phrase, six.string_types)
 
     space_tokenized = slash_separated_phrase.split(" ")
-    slash_tokenized = map(lambda x: x.split("/"), space_tokenized)
-    # Unpack arguments to zip, which will return an iterator with two elements
+    slash_tokenized = list(map(lambda x: x.split("/"), space_tokenized))
 
     return word_pos_tuples_to_phrase(slash_tokenized)
 
@@ -89,8 +88,7 @@ def parse_bar_separated_phrase(bar_separated_phrase):
     assert isinstance(bar_separated_phrase, six.string_types)
 
     space_tokenized = bar_separated_phrase.split(" ")
-    bar_tokenized = map(lambda x: x.split("|"), space_tokenized)
-    # Unpack arguments to zip, which will return an iterator with two elements
+    bar_tokenized = list(map(lambda x: x.split("|"), space_tokenized))
 
     return word_pos_tuples_to_phrase(bar_tokenized)
 
