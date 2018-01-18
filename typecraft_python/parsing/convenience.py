@@ -45,10 +45,33 @@ def parse_slash_separated_phrase(slash_separated_phrase):
     word_objs = []
     words = []
     for word, pos in slash_tokenized:
-        word_obj = Word(word)
-        word_obj.pos = pos
-        word_objs.append(word_obj)
+        word_objs.append(Word(word, pos=pos))
         words.append(word)
 
-    return Phrase(detokenize(words), words=[word_objs])
+    return Phrase(detokenize(words), words=word_objs)
 
+
+def parse_bar_separated_phrase(bar_separated_phrase):
+    """
+    Parses a vertical bar separated phrase into a Phrase object.
+
+    The expect format is that used by e.g. the LCC:
+
+        Aber|KON es|PPER gibt|VVFIN keine|PIAT Garantie|NN
+
+    :param bar_separated_phrase:
+    :return:
+    """
+    assert isinstance(bar_separated_phrase, six.string_types)
+
+    space_tokenized = bar_separated_phrase.split(" ")
+    bar_tokenized = map(lambda x: x.split("|"), space_tokenized)
+    # Unpack arguments to zip, which will return an iterator with two elements
+
+    word_objs = []
+    words = []
+    for word, pos in bar_tokenized:
+        word_objs.append(Word(word, pos=pos))
+        words.append(word)
+
+    return Phrase(detokenize(words), words=word_objs)
