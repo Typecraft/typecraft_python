@@ -238,7 +238,7 @@ class Phrase:
         :return: Nothing
         """
         if not (isinstance(word, Word)):
-            raise Exception("Bad argument to add_word, expected a word instance")
+            raise Exception("Bad argument to add_word, expected a word instance, got %s" % (type(word)))
 
         self.words.append(word)
 
