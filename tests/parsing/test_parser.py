@@ -7,8 +7,8 @@ from typecraft_python.models import Text, Phrase, Word, GlobalTag, PhraseValidit
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-file_path = os.path.join(BASE_DIR, 'tests/resources/xml_1_test.xml')
-file_path_2 = os.path.join(BASE_DIR, 'tests/resources/xml_2_test.xml')
+file_path = os.path.join(BASE_DIR, 'parsing/resources/xml_1_test.xml')
+file_path_2 = os.path.join(BASE_DIR, 'parsing/resources/xml_2_test.xml')
 small_tc_xml_string = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <typecraft xsi:schemaLocation="http://typecraft.org/typecraft.xsd" xmlns="http://typecraft.org/typecraft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <text id="3453" lang="kri">
@@ -159,7 +159,7 @@ def test_write_xml():
 def test_write_xml_to_file():
     texts = Parser.parse(small_tc_xml_string)
 
-    path = os.path.join(BASE_DIR, "tests/resources/out_test.xml")
+    path = os.path.join(BASE_DIR, "parsing/resources/out_test.xml")
     Parser.write_to_file(path, texts)
 
     assert os.path.isfile(path)
