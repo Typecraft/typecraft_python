@@ -1,8 +1,11 @@
+# coding: utf-8
 import pytest
+
+from parsing.parser import Parser
 from typecraft_python.integrations.nltk_integration import tokenize_phrase, pos_tag_phrase, \
     raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase, raw_text_to_phrases, raw_text_to_tokenized_phrases, \
     lemmatize_word, lemmatize_phrase
-from typecraft_python.models import Phrase, Word, Morpheme
+from typecraft_python.models import Phrase, Word, Morpheme, Text
 
 # Ensure base modules is downloaded
 import nltk
@@ -130,6 +133,39 @@ class TestSentTokenize(object):
         assert isinstance(phrases[1], Phrase)
         assert len(phrases[0].words) == 6
         assert len(phrases[1].words) == 7
+
+    def test_longer_text(self):
+        text = u"""
+        Die wortschlaue Prinzessinn.
+Es war einmal ein König, der hatte eine Tochter, die war so schlau und
+spitzfindig in Worten, daß Keiner sie zum Schweigen bringen konnte.Da setzte der König einen Preis aus und ließ bekannt machen, daß Der,
+welcher es könnte, die Prinzessinn und das halbe Reich haben sollte.Drei Brüder, welche dies hörten, beschlossen, ihr Glück zu versuchen.Zuerst machten sich die beiden ältesten auf, die sich am klügsten
+dünkten; aber sie konnten Nichts bei der Prinzessinn ausrichten und
+mußten noch dazu mit blauer Haut wieder abziehen. Darnach machte sich Aschenbrödel auch auf. Als er eine Strecke weit gegangen war, fand er am Wege ein Weidenreis, das nahm er auf. Eine Strecke weiter fand er eine Scherbe von einer alten Schüssel, die nahm er auch auf. Als er noch etwas weiter gegangen war, fand er einen todten Staar, und etwas darnach
+ein krummes Bockshorn; ein wenig später fand er noch ein krummes
+Bockshorn, und als er über das Feld zum Königshof gehen wollte, wo
+Dünger ausgestreu't lag, fand er darunter eine ausgegangene Schuhsohle.
+Alle diese Dinge nahm er mit sich zum Königsschloß, und damit trat er zu
+der Prinzessinn ein. »Guten Tag!« sagte er. »Guten Tag!« sagte sie und
+verzog das Gesicht. »Kann ich nicht meinen Staar gebraten kriegen?«
+fragte er. »Ich bin bange, er birstet,« antwortete die Prinzessinn. »O,
+das hat keine Noth, ich binde dieses Weidenreis um,« sagte der Bursch
+und nahm das Reis hervor. »Aber das Fett läuft heraus,« sagte die
+Prinzessinn. »Ich halte dies unter,« sagte der Bursch und zeigte ihr die
+Scherbe von der Schüssel. »Du machst es mir so krumm, Du!« sagte die
+Prinzessinn. »Ich mach es nicht krumm, sondern es ist schon krumm,«
+sagte der Bursch und nahm das eine Horn hervor. »Nein, etwas Ähnliches
+hab' ich noch mein Lebtag nicht gesehn!« rief die Prinzessinn. »Hier
+siehst Du was Ähnliches,« sagte der Bursch und nahm das andre Bockshorn
+hervor. »Ich glaube, Du bist ausgegangen, um mich zum Schweigen zu
+bringen,« sagte die Prinzessinn. »Nein, ich bin nicht ausgegangen,
+aber diese hier ist ausgegangen,« sagte der Bursch und zeigte ihr die
+Schuhsohle. Hierauf wußte die Prinzessinn Nichts mehr zu antworten. »Nun
+bist Du mein!« sagte der Bursch, und darauf erhielt er die Prinzessinn
+und das halbe Königreich.
+        """
+        phrases = raw_text_to_tokenized_phrases(text)
+        assert len(phrases) == 22
 
 
 class TestLemmatize(object):
