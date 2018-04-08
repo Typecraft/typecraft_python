@@ -84,6 +84,14 @@ class TestParseSlashSeparated(object):
         assert parsed.words[10].word == "."
         assert parsed.words[10].pos == "."
 
+    def test_should_only_split_at_last_occurrence(self):
+        unparsed = "and/or/cc"
+        parsed = parse_slash_separated_phrase(unparsed)
+        assert len(parsed.words) == 1
+
+        assert parsed.words[0].word == "and/or"
+        assert parsed.words[0].pos == "cc"
+
 
 class TestParseBarSeparated(object):
 
