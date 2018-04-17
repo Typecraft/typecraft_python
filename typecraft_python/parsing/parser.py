@@ -541,7 +541,7 @@ class Parser:
     def convert_phrase_to_etree(root, phrase):
         assert isinstance(phrase, Phrase)
 
-        phrase_el = ElementTree.SubElement(root, 'phrase', {'valid': 'UNKNOWN'})
+        phrase_el = ElementTree.SubElement(root, 'phrase', {'valid': phrase.validity.value})
 
         ElementTree.SubElement(phrase_el, 'original').text = phrase.phrase
         ElementTree.SubElement(phrase_el, 'translation').text = phrase.translation
