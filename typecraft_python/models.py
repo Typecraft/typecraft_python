@@ -171,11 +171,11 @@ class Text:
 
 
 class PhraseValidity(Enum):
-    UNKNOWN = 1
-    VALID = 2
-    INVALID = 3
-    SPECIAL = 4
-    EMPTY = 5
+    UNKNOWN = 'UNKNOWN'
+    VALID = 'VALID'
+    INVALID = 'INVALID'
+    SPECIAL = 'SPECIAL'
+    EMPTY = 'EMPTY'
 
 
 class Phrase:
