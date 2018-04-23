@@ -88,18 +88,19 @@ def tokenize_phrase(phrase):
     return phrase
 
 
-def pos_tag_phrase(phrase):
+def pos_tag_phrase(phrase, language='eng'):
     """
     Pos tags a phrase.
 
     The tagger used is the default nltk tagger.
 
     :param phrase: A Phrase to be tagged.
+    :param language: The language of the phrase.
     :return: The phrase. Note that tagging is done in-place.
              Thus this return value need not be used.
     """
     words = [word.word for word in phrase]
-    tagged = nltk.pos_tag(words)
+    tagged = nltk.pos_tag(words, lang=language)
 
     for i in range(len(tagged)):
         phrase.words[i].pos = tagged[i][1]
