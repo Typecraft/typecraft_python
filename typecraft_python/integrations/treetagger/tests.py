@@ -1,8 +1,19 @@
+import pytest
+from treetaggerwrapper import TreeTaggerError
+from treetaggerwrapper import TreeTagger as _TreeTagger
+
 from typecraft_python.parsing.convenience import words_to_phrase
 from typecraft_python.models import Text, Word
 from typecraft_python.integrations.treetagger import TreeTagger
 
+try:
+    _TreeTagger(TAGLANG='en')
+    treetagger_enabled = True
+except TreeTaggerError:
+    treetagger_enabled = False
 
+
+@pytest.mark.skipif(not treetagger_enabled, reason="Treetagger is not enabled")
 class TestTreeTagger(object):
     def test_tag_raw(self):
         raw_english_text = u"This is a short sentence."
