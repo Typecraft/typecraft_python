@@ -3,7 +3,7 @@ This file contains multiple convenience methods for different forms of parsing.
 """
 import six
 import string
-from typecraft_python.models import Phrase, Word
+from typecraft_python.models import Phrase, Word, Morpheme
 
 
 def detokenize(tokens):
@@ -55,6 +55,17 @@ def word_pos_tuples_to_phrase(word_pos_iterable):
     )
 
 
+def word_pos_lemma_tuples_to_phrase(word_pos_lemma_iterable):
+    if not hasattr(word_pos_lemma_iterable, '__iter__'):
+        raise Exception("Invalid argument to words_to_phrase, expected iterable")
+
+    return Phrase(
+        detokenize([word for word, _, _ in word_pos_lemma_iterable]),
+        words=[Word(word, pos=pos, morphemes=[Morpheme(morpheme=word, baseform=lemma)]) for word, pos, lemma
+               in word_pos_lemma_iterable]
+    )
+
+
 def parse_slash_separated_phrase(slash_separated_phrase):
     """
     Parses a slash separated phrase into a Phrase object.
@@ -91,4 +102,5 @@ def parse_bar_separated_phrase(bar_separated_phrase):
     bar_tokenized = list(map(lambda x: x.rsplit("|", 1), space_tokenized))
 
     return word_pos_tuples_to_phrase(bar_tokenized)
+
 

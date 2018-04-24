@@ -1,0 +1,1 @@
+from typecraft_python.integrations.treetagger.tagger import TreeTagger
