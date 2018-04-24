@@ -13,8 +13,12 @@ class Corpus:
 
     This class represents the 1-1 mapping to and from the tc-xml files.
     """
+
     def __init__(self):
         self.texts = []
+
+    def __getitem__(self, item):
+        return self.texts[item]
 
     def __iter__(self):
         return self.texts.__iter__()
@@ -162,6 +166,9 @@ class Text:
             'metadata': self.metadata,
             'phrases': list(map(lambda phr: phr.to_dict(), self.phrases))
         }
+
+    def __getitem__(self, item):
+        return self.phrases[item]
 
     def __str__(self):
         return dump(self.to_dict())
@@ -381,6 +388,9 @@ class Phrase:
             'words': list(map(lambda wrd: wrd.to_dict(), self.words))
         }
 
+    def __getitem__(self, item):
+        return self.words[item]
+
     def __str__(self):
         return dump(self.to_dict())
 
@@ -483,6 +493,9 @@ class Word:
             'stem_morpheme': self.stem_morpheme,
             'morphemes': list(map(lambda morpheme: morpheme.to_dict(), self.morphemes))
         }
+
+    def __getitem__(self, item):
+        return self.morphemes[item]
 
     def __str__(self):
         return dump(self.to_dict())

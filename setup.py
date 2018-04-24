@@ -12,7 +12,8 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     "PYyaml",
     "enum34",
-    "numpy"
+    "numpy",
+    "treetaggerwrapper"
 ]
 
 test_requirements = [
