@@ -2,6 +2,7 @@ import copy
 
 import click
 
+from typecraft_python.cli.util import write_to_stdout_or_file
 from typecraft_python.parsing.parser import Parser
 from typecraft_python.models import Phrase, Text
 from typecraft_python.integrations.nltk_integration import raw_text_to_tokenized_phrases, raw_text_to_phrases, \
@@ -15,7 +16,7 @@ def main():
 
 
 @main.command()
-@click.argument('input', type=click.File('r'))
+@click.argument('input', type=click.File('r'), nargs=-1)
 @click.option('--sent-tokenize/--no-sent-tokenize', default=True)
 @click.option('--tokenize/--no-tokenize', default=True)
 @click.option('--tag/--no-tag', default=True)
@@ -23,6 +24,7 @@ def main():
 @click.option('--title', default='Automatically generated text from tpy')
 @click.option('--language', default='en')
 @click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
+@click.option('-o', '--output', type=click.Path())
 def raw(
     input,
     sent_tokenize,
@@ -31,9 +33,16 @@ def raw(
     tagger,
     title,
     language,
-    meta
+    meta,
+    output
 ):
-    contents = input.read()
+    contents = ""
+    for _input in input:
+        _contents = _input.read()
+        if _contents[-1] != "\n":
+            _contents += "\n"
+        contents += _contents
+
     if sent_tokenize and tokenize:
         phrases = raw_text_to_tokenized_phrases(contents)
     elif sent_tokenize:
@@ -52,11 +61,12 @@ def raw(
         title=title,
         metadata=dict(meta)
     )
-    click.echo(Parser.write([text]))
+
+    write_to_stdout_or_file(Parser.write([text]), output)
 
 
 @main.command()
-@click.argument('input', type=click.File('r'))
+@click.argument('input', type=click.File('r'), nargs=-1)
 @click.option('--tokenize/--no-tokenize', default=True)
 @click.option('--tag/--no-tag', default=False)
 @click.option('--tagger', default='TreeTagger')
@@ -65,6 +75,7 @@ def raw(
 @click.option('--title', default=None)
 @click.option('--override-language', default=None)
 @click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
+@click.option('-o', '--output', type=click.Path())
 def xml(
     input,
     tokenize,
@@ -74,12 +85,15 @@ def xml(
     merge,
     title,
     override_language,
-    meta
+    meta,
+    output,
 ):
     if split > 1 and merge:
         raise ValueError("Error running tpy xml: Both merge and split cannot be set to true")
 
-    texts = Parser.parse(input.read())
+    texts = []
+    for _input in input:
+        texts.extend(Parser.parse(_input.read()))
     new_texts = []
     for text in texts:
         if tokenize:
@@ -111,12 +125,12 @@ def xml(
             root_text.merge(text)
         new_texts = [root_text]
 
-    click.echo(Parser.write(new_texts))
+    write_to_stdout_or_file(Parser.write(new_texts), output)
 
 
 @main.command()
 def convert():
-    click.echo("Hello")
+    raise NotImplementedError("Convert command not implemented yet.")
 
 
 @main.command()
