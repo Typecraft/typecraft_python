@@ -86,7 +86,7 @@ def xml(
     title,
     override_language,
     meta,
-    output,
+    output
 ):
     if split > 1 and merge:
         raise ValueError("Error running tpy xml: Both merge and split cannot be set to true")
