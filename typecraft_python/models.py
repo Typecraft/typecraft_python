@@ -141,6 +141,21 @@ class Text:
         for phrase in self.phrases:
             phrase.clear_tags()
 
+    def merge(
+        self,
+        other_text
+    ):
+        """
+        Merges another text into this. Only the title and metadata of this text will be preserved.
+
+        :param other_text:
+        :return:
+        """
+        assert isinstance(other_text, Text)
+        self.add_phrases(other_text.phrases)
+
+        return self
+
     def attributes(self):
         """
         Return all non-children attributes of the text.
