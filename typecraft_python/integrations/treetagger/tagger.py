@@ -46,6 +46,11 @@ class TreeTagger(TypecraftTagger):
             self.tag_phrase(phrase, language)
         return text
 
+    def tag_phrases(self, phrases, language='en'):
+        for phrase in phrases:
+            self.tag_phrase(phrase, language)
+        return phrases
+
     def tag_phrase(self, phrase, language='en'):
         detokenized = detokenize([word.word for word in phrase])
         tagged = self._get_tagger_instance(language).tag_text(detokenized)
@@ -63,7 +68,7 @@ class TreeTagger(TypecraftTagger):
             # lemmatization
             if len(word.morphemes) == 0:
                 word.add_morpheme(Morpheme(
-                    morpheme=word,
+                    morpheme=word.word,
                     baseform=tagged[i][2]
                 ))
         return phrase
