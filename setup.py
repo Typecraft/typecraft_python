@@ -13,7 +13,8 @@ requirements = [
     "PYyaml",
     "enum34",
     "numpy",
-    "treetaggerwrapper"
+    "treetaggerwrapper",
+    "click"
 ]
 
 test_requirements = [
@@ -30,6 +31,11 @@ setup(
     packages=find_packages(),
     package_dir={'typecraft_python':
                  'typecraft_python'},
+    entry_points={
+        'console_scripts': [
+            'tpy=typecraft_python.cli.main:main'
+        ]
+    },
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
