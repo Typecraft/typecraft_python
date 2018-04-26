@@ -1,7 +1,6 @@
 # coding: utf-8
 import pytest
 
-from parsing.parser import Parser
 from typecraft_python.integrations.nltk_integration import tokenize_phrase, pos_tag_phrase, \
     raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase, raw_text_to_phrases, raw_text_to_tokenized_phrases, \
     lemmatize_word, lemmatize_phrase

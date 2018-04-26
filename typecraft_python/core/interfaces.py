@@ -71,6 +71,15 @@ class TypecraftTagger(object):
         """
         raise NotImplementedError()
 
+    def tag_phrases(self, phrases, language='en'):
+        """
+        Tags a collection of phrases.
+
+        :param phrases:
+        :param language: The language of the text to be tagged.
+        :return:
+        """
+
     def tag_phrase(self, phrase, language='en'):
         """
         Tags a Typecraft Phrase object.

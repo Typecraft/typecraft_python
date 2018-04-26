@@ -19,6 +19,17 @@ class TreeTagger(TypecraftTagger):
         result = list(map(lambda x: x.split("\t"), result))
         return word_pos_lemma_tuples_to_phrase(result)
 
+    @staticmethod
+    def _sentence_tokenize_result(result):
+        batched_result = []
+        current = []
+        for token in result:
+            current.append(token)
+            if token.split("\t")[1] == 'SENT':
+                batched_result.append(current)
+                current = []
+        return batched_result
+
     def is_parser(self):
         return False
 
@@ -30,8 +41,13 @@ class TreeTagger(TypecraftTagger):
 
     def tag_raw(self, raw_text, language='en'):
         tagged = self._get_tagger_instance(language).tag_text(raw_text)
-        tagged = list(map(lambda x: x.split("\t"), tagged))
-        return word_pos_lemma_tuples_to_phrase(tagged)
+        sentence_tokenized = self._sentence_tokenize_result(tagged)
+        phrases = []
+        for sentence in sentence_tokenized:
+            tagged = list(map(lambda x: x.split("\t"), sentence))
+            phrases.append(word_pos_lemma_tuples_to_phrase(tagged))
+
+        return phrases
         # return parse_slash_separated_phrase()
 
     def tag_raw_words(self, word_list, language='en'):
@@ -45,6 +61,11 @@ class TreeTagger(TypecraftTagger):
         for phrase in text:
             self.tag_phrase(phrase, language)
         return text
+
+    def tag_phrases(self, phrases, language='en'):
+        for phrase in phrases:
+            self.tag_phrase(phrase, language)
+        return phrases
 
     def tag_phrase(self, phrase, language='en'):
         detokenized = detokenize([word.word for word in phrase])
@@ -63,7 +84,7 @@ class TreeTagger(TypecraftTagger):
             # lemmatization
             if len(word.morphemes) == 0:
                 word.add_morpheme(Morpheme(
-                    morpheme=word,
+                    morpheme=word.word,
                     baseform=tagged[i][2]
                 ))
         return phrase

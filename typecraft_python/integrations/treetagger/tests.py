@@ -18,7 +18,7 @@ class TestTreeTagger(object):
     def test_tag_raw(self):
         raw_english_text = u"This is a short sentence."
         tagger = TreeTagger()
-        phrase = tagger.tag_raw(raw_english_text, language='en')
+        phrase = tagger.tag_raw(raw_english_text, language='en')[0]
 
         assert phrase[0].word == "This"
         assert phrase[1].word == "is"
@@ -66,6 +66,19 @@ class TestTreeTagger(object):
         assert phrase[3].pos != ""
         assert phrase[4].pos != ""
         assert phrase[5].pos != ""
+
+    def test_tag_raw__multiple_sentences__is_tokenized(self):
+        raw = "This is a sentence. This is another sentence. How about this one, hmm?"
+        tagger = TreeTagger()
+        phrases = tagger.tag_raw(raw)
+        assert len(phrases) == 3
+        assert phrases[0].phrase == "This is a sentence."
+        assert phrases[1].phrase == "This is another sentence."
+        assert phrases[2].phrase == "How about this one, hmm?"
+
+        assert len(phrases[0].words) == 5
+        assert len(phrases[1].words) == 5
+        assert len(phrases[2].words) == 7
 
     def test_tag_text(self):
         text = Text()
