@@ -1,6 +1,7 @@
 import copy
 
 import click
+import nltk
 
 from typecraft_python.cli.util import write_to_stdout_or_file
 from typecraft_python.parsing.parser import Parser
@@ -36,6 +37,11 @@ def raw(
     meta,
     output
 ):
+    # Perform input validation
+    if tag and (not sent_tokenize or not tokenize):
+        raise ValueError("Cannot tag untokenized text. Please set both `sent_tokenize` "
+                         "and `tokenize` to true")
+
     contents = ""
     for _input in input:
         _contents = _input.read()
@@ -43,18 +49,31 @@ def raw(
             _contents += "\n"
         contents += _contents
 
-    if sent_tokenize and tokenize:
-        phrases = raw_text_to_tokenized_phrases(contents)
-    elif sent_tokenize:
-        phrases = raw_text_to_phrases(contents)
-    elif tokenize:
-        phrases = [raw_phrase_to_tokenized_phrase(contents)]
-    else:
-        phrases = [Phrase(contents)]
-
     if tag:
-        tagger = get_tagger_by_name(tagger)()
-        phrases = tagger.tag_phrases(phrases, language)
+        _tagger = get_tagger_by_name(tagger)()
+
+    if _tagger and _tagger.has_automatic_word_tokenization_support() and \
+       _tagger.has_automatic_sentence_tokenization_support():
+        # The tagger has everything we need to get full tokenization
+        phrases = _tagger.tag_raw(contents)
+    elif _tagger and _tagger.has_automatic_word_tokenization_support():
+        # Sentence tokenize, then tag.
+        phrases = nltk.sent_tokenize(contents, language)
+        _phrases = []
+        for phrase in phrases:
+            _phrases.extend(_tagger.tag_raw(phrase))
+    else:
+        if sent_tokenize and tokenize:
+            phrases = raw_text_to_tokenized_phrases(contents)
+        elif sent_tokenize:
+            phrases = raw_text_to_phrases(contents)
+        elif tokenize:
+            phrases = [raw_phrase_to_tokenized_phrase(contents)]
+        else:
+            phrases = [Phrase(contents)]
+
+        if tag:
+            phrases = _tagger.tag_phrases(phrases, language)
 
     text = Text(
         phrases=phrases,
