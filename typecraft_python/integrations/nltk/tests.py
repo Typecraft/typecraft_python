@@ -1,9 +1,10 @@
 # coding: utf-8
 import pytest
 
-from typecraft_python.integrations.nltk_integration import tokenize_phrase, pos_tag_phrase, \
-    raw_phrase_to_tokenized_phrase, find_named_entities_for_phrase, raw_text_to_phrases, raw_text_to_tokenized_phrases, \
-    lemmatize_word, lemmatize_phrase
+from typecraft_python.integrations.nltk.lemmatization import lemmatize_word, lemmatize_phrase
+from typecraft_python.integrations.nltk.ne import find_named_entities_for_phrase
+from typecraft_python.integrations.nltk.tokenization import raw_phrase_to_tokenized_phrase, raw_text_to_phrases, \
+    raw_text_to_tokenized_phrases, tokenize_phrase
 from typecraft_python.models import Phrase, Word, Morpheme, Text
 
 # Ensure base modules is downloaded
@@ -52,24 +53,6 @@ class TestTokenize(object):
         assert phrase.words[3].word == "nice"
         assert phrase.words[4].word == "phrase"
         assert phrase.words[5].word == "."
-
-
-class TestPosTag(object):
-
-    @classmethod
-    def setup_class(cls):
-        pass
-
-    def test_pos_phrase(self):
-        phrase = Phrase("This is a nice phrase.")
-        tokenize_phrase(phrase)
-        pos_tag_phrase(phrase)
-
-        for word in phrase:
-            assert word.pos != ''
-
-    def test_pos_phrase_without_words_does_nothing(self):
-        pass
 
 
 class TestNamedEntities(object):
