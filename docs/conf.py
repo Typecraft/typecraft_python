@@ -59,8 +59,8 @@ html_output_encoding = 'utf-8'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Typecraft XML Python'
-copyright = u"2016, Tormod Haugland"
+project = u'Typecraft python'
+copyright = u"2018, Tormod Haugland"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
