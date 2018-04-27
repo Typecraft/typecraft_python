@@ -2,7 +2,7 @@ import six
 from enum import Enum
 from yaml import dump
 
-from typecraft_python.parsing.mappings import get_pos_conversions
+from typecraft_python.parsing.mappings import get_pos_conversions, get_gloss_conversions
 from typecraft_python.core.interfaces import TypecraftModel
 
 """
@@ -708,7 +708,7 @@ class Morpheme(TypecraftModel):
         return self.morpheme
 
     def map_tags(self, tagset='tc'):
-        return get_pos_conversions(self.glosses)
+        return get_gloss_conversions(self.glosses)
 
     def merge(self, other):
         # Merging morphemes does not seem to make sense
