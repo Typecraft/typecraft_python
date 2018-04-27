@@ -59,39 +59,39 @@ Load a raw file, tokenize and tag it, and output xml (to stdout):
 
 .. code-block:: console
 
-    tpy raw your_file.txt
+    $ tpy raw your_file.txt
 
 To save to a file
 
 .. code-block:: console
 
-    tpy raw your_file.txt -o output.xml
+    $ tpy raw your_file.txt -o output.xml
     # or
-    tpy raw your_file.txt > output.xml
+    $ tpy raw your_file.txt > output.xml
 
 To tag using a specific tagger:
 
 .. code-block:: console
 
-    tpy raw your_file.txt --tagger=tree  # Tags using the tree tagger
+    $ tpy raw your_file.txt --tagger=tree  # Tags using the tree tagger
 
 Attach "Annotator" metadata:
 
 .. code-block:: console
 
-    tpy raw your_file.txt --meta Annotator "Tormod Haugland"
+    $ tpy raw your_file.txt --meta Annotator "Tormod Haugland"
 
 Tags a german text
 
 .. code-block:: console
 
-    tpy raw your_file.txt --language=de
+    $ tpy raw your_file.txt --language=de
 
 Tags a german text using the TreeTagger and converts all tags to the Typecraft tagset:
 
 .. code-block:: console
 
-    tpy raw your_file.txt --tagger=tree --tagset=tc --language=de
+    $ tpy raw your_file.txt --tagger=tree --tagset=tc --language=de
 
 
 Suppose you have the file *input.txt* with the following contents:
@@ -104,7 +104,7 @@ You now run the command
 
 .. code-block:: console
 
-    tpy raw input.txt --tagger=tree --language=de --tagset=tc
+    $ tpy raw input.txt --tagger=tree --language=de --tagset=tc
 
 Your output (after prettifying) will be:
 
@@ -184,25 +184,25 @@ Load a text and splits it into 10 smaller texts (all contained in one file):
 
 .. code-block:: console
 
-    tpy xml your_file.xml --split 10
+    $ tpy xml your_file.xml --split 10
 
 Load a text and convert the tagset:
 
 .. code-block:: console
 
-    tpy xml your_file.xml --tagset=tc
+    $ tpy xml your_file.xml --tagset=tc
 
 Tag or re-tag a text:
 
 .. code-block:: console
 
-    tpy xml your_file.xml --tag --tagger=tree
+    $ tpy xml your_file.xml --tag --tagger=tree
 
 Change language and set some metadata:
 
 .. code-block:: console
 
-    tpy xml --override-language=nob \
+    $ tpy xml --override-language=nob \
         --meta Annotator "Tormod Haugland" \
         --meta "Content description" "This is some cool content"
 
@@ -245,13 +245,13 @@ Load and treat a raw file, then split it into 10 texts:
 .. code-block:: console
 
     # The "-" in the xml command reads the piped input
-    tpy raw input.txt | tpy xml - --split 10
+    $ tpy raw input.txt | tpy xml - --split 10
 
 Load and treat a raw file, then merge it with an existing files texts.
 
 .. code-block:: console
 
-    tpy raw append_this.txt | tpy xml - to_this.xml --merge
+    $ tpy raw append_this.txt | tpy xml - to_this.xml --merge
 
 Make sure ntexts behaves correctly:
 
@@ -264,5 +264,5 @@ Merge files then re-split:
 
 .. code-block::  console
 
-    tpy xml corpus{1..100}.xml --merge | tpy xml - -split 1000
+    $ tpy xml corpus{1..100}.xml --merge | tpy xml - -split 1000
 

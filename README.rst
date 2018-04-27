@@ -62,27 +62,27 @@ Load a raw file, tokenize and tag it, and output xml (to stdout):
 
 .. code-block:: console
 
-    tpy raw your_file.txt
+    $ tpy raw your_file.txt
 
 To save to a file
 
 .. code-block:: console
 
-    tpy raw your_file.txt -o output.xml
+    $ tpy raw your_file.txt -o output.xml
     # or
-    tpy raw your_file.txt > output.xml
+    $ tpy raw your_file.txt > output.xml
 
 To tag using a specific tagger:
 
 .. code-block:: console
 
-    tpy raw your_file.txt --tagger=tree  # Tags using the tree tagger
+    $ tpy raw your_file.txt --tagger=tree  # Tags using the tree tagger
 
 To load a Typecraft xml file and tag it:
 
 .. code-block:: console
 
-    tpy xml your_file.xml --tag --tagger=nltk -o tagged_output.xml
+    $ tpy xml your_file.xml --tag --tagger=nltk -o tagged_output.xml
 
 
 Credits
