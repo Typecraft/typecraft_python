@@ -15,10 +15,10 @@ class NltkTagger(TypecraftTagger):
     def is_parser(self):
         return False
 
-    def has_automatic_sentence_tokenization_support(self):
+    def has_automatic_sentence_tokenization_support(self, language='en'):
         return False
 
-    def has_automatic_word_tokenization_support(self):
+    def has_automatic_word_tokenization_support(self, language='en'):
         return False
 
     @staticmethod
