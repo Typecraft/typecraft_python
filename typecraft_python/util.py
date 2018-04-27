@@ -1,5 +1,6 @@
 import six
 
+from typecraft_python.integrations.nltk.tagger import NltkTagger
 from typecraft_python.integrations.treetagger import TreeTagger
 
 
@@ -16,7 +17,7 @@ def split(a, n):
 
 
 TAGGER_TRANSLATIONS = {
-    'tree': TreeTagger
+    'tree': TreeTagger,
 }
 
 
@@ -26,6 +27,9 @@ def get_tagger_by_name(name):
     name_lower = name.lower()
     if 'tree' in name_lower:
         return TreeTagger
+    # Nltk
+    if 'nl' in name_lower:
+        return NltkTagger
 
     raise ValueError("Tagger %s not found" % (name,))
 

@@ -40,14 +40,15 @@ class TypecraftTagger(object):
         """
         raise NotImplementedError()
 
-    def tag_raw_phrases(self, phrase_list, language='en'):
+    def tag_raw_phrases(self, phrases, language='en'):
         """
         Tags a list of phrasal tokens.
 
         :param language: The language of the text to be tagged.
         :param phrase_list: A list of
         :return:
-        """
+a       """
+        raise NotImplementedError()
 
     def tag_raw_words(self, word_list, language='en'):
         """
@@ -79,6 +80,7 @@ class TypecraftTagger(object):
         :param language: The language of the text to be tagged.
         :return:
         """
+        raise NotImplementedError()
 
     def tag_phrase(self, phrase, language='en'):
         """

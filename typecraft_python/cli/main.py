@@ -6,8 +6,8 @@ import nltk
 from typecraft_python.cli.util import write_to_stdout_or_file
 from typecraft_python.parsing.parser import Parser
 from typecraft_python.models import Phrase, Text
-from typecraft_python.integrations.nltk_integration import raw_text_to_tokenized_phrases, raw_text_to_phrases, \
-    raw_phrase_to_tokenized_phrase, tokenize_phrase
+from typecraft_python.integrations.nltk.tokenization import raw_phrase_to_tokenized_phrase, raw_text_to_phrases, \
+    raw_text_to_tokenized_phrases, tokenize_phrase
 from typecraft_python.util import get_tagger_by_name, split as split_into_sublists
 
 
@@ -21,7 +21,7 @@ def main():
 @click.option('--sent-tokenize/--no-sent-tokenize', default=True)
 @click.option('--tokenize/--no-tokenize', default=True)
 @click.option('--tag/--no-tag', default=True)
-@click.option('--tagger', default='TreeTagger')
+@click.option('--tagger', default='nltk')
 @click.option('--title', default='Automatically generated text from tpy')
 @click.option('--language', default='en')
 @click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
@@ -88,7 +88,7 @@ def raw(
 @click.argument('input', type=click.File('r'), nargs=-1)
 @click.option('--tokenize/--no-tokenize', default=True)
 @click.option('--tag/--no-tag', default=False)
-@click.option('--tagger', default='TreeTagger')
+@click.option('--tagger', default='nltk')
 @click.option('--split', default=1, type=int)
 @click.option('--merge/--no-merge', default=False)
 @click.option('--title', default=None)
