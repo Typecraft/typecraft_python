@@ -18,11 +18,11 @@ Typecraft Python
      :alt: Updates
 
 
-Lightweight implementation of the Typecraft XML format in python.
-
+This repository contains an IGT model based on the Typecraft IGT format. It also contains a simple CLI for
+performing various NLP tasks, interfacing with both NLTK and other tools such as the TreeTagger.
 
 * Free software: MIT license
-* Documentation: https://typecraft_python.readthedocs.io.
+* Full Documentation: https://typecraft_python.readthedocs.io.
 
 Installation
 ------------
@@ -31,13 +31,28 @@ Installation
 
 Features
 --------
+* Parsing of the Typecraft XML format.
+* Manipulation of the Typecraft IGT model format.
+   * Integrating with NLTK
+   * Integrating with TreeTagger
+* Provides a CLI that can be used to load, convert and manipulate raw text and Typecraft XML files.
 
-This repository contains a lightweight python implementation of the Typecraft IGT-model, bundled with a simple parser.
 
 Usage
 -----
 
-Currently, the project can only be used as a library, and does nothing as a standalone.
+```
+Usage: tpy [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  convert
+  ntexts   This command lists the number of texts in a...
+  raw
+  xml
+```
 
 
 Credits
