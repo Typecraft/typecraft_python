@@ -93,6 +93,55 @@ Tags a german text using the TreeTagger and converts all tags to the Typecraft t
 
     tpy raw your_file.txt --tagger=tree --tagset=tc --language=de
 
+
+Suppose you have the file *input.txt* with the following contents:
+
+.. code-block:: text
+
+    Ich bin glucklich.
+
+You now run the command
+
+.. code-block:: console
+
+    tpy raw input.txt --tagger=tree --language=de --tagset=tc
+
+Your output (after prettifying) will be:
+
+.. code-block:: xml
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <typecraft xmlns="http://typecraft.org/typecraft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://typecraft.org/typecraft.xsd">
+       <text lang="de">
+          <title>Automatically generated text from tpy</title>
+          <titleTranslation />
+          <body />
+          <phrase valid="EMPTY">
+             <original>Ich bin glucklich.</original>
+             <translation />
+             <translation2 />
+             <globaltags id="1" tagset="DEFAULT" />
+             <description />
+             <word head="false" text="Ich">
+                <pos>PN</pos>
+                <morpheme baseform="ich" meaning="" text="Ich" />
+             </word>
+             <word head="false" text="bin">
+                <pos>AUX</pos>
+                <morpheme baseform="sein" meaning="" text="bin" />
+             </word>
+             <word head="false" text="glücklich">
+                <pos>ADJ</pos>
+                <morpheme baseform="glücklich" meaning="" text="glücklich" />
+             </word>
+             <word head="false" text=".">
+                <pos>PUN</pos>
+                <morpheme baseform="." meaning="" text="." />
+             </word>
+          </phrase>
+       </text>
+    </typecraft>
+
 xml
 ________________
 
@@ -199,6 +248,7 @@ Load and treat a raw file, then split it into 10 texts:
     tpy raw input.txt | tpy xml - --split 10
 
 Load and treat a raw file, then merge it with an existing files texts.
+
 .. code-block:: console
 
     tpy raw append_this.txt | tpy xml - to_this.xml --merge
@@ -215,3 +265,4 @@ Merge files then re-split:
 .. code-block::  console
 
     tpy xml corpus{1..100}.xml --merge | tpy xml - -split 1000
+
