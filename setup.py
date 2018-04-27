@@ -14,7 +14,8 @@ requirements = [
     "enum34",
     "numpy",
     "treetaggerwrapper",
-    "click"
+    "click",
+    "six"
 ]
 
 test_requirements = [
