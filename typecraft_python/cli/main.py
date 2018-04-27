@@ -25,6 +25,7 @@ def main():
 @click.option('--title', default='Automatically generated text from tpy')
 @click.option('--language', default='en')
 @click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
+@click.option('--tagset', type=str, default='')
 @click.option('-o', '--output', type=click.Path())
 def raw(
     input,
@@ -35,6 +36,7 @@ def raw(
     title,
     language,
     meta,
+    tagset,
     output
 ):
     # Perform input validation
@@ -81,6 +83,9 @@ def raw(
         metadata=dict(meta)
     )
 
+    if tagset != '':
+        text.map_tags(tagset)
+
     write_to_stdout_or_file(Parser.write([text]), output)
 
 
@@ -94,6 +99,7 @@ def raw(
 @click.option('--title', default=None)
 @click.option('--override-language', default=None)
 @click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
+@click.option('--tagset', type=str, default="")
 @click.option('-o', '--output', type=click.Path())
 def xml(
     input,
@@ -105,6 +111,7 @@ def xml(
     title,
     override_language,
     meta,
+    tagset,
     output
 ):
     if split > 1 and merge:
@@ -138,11 +145,15 @@ def xml(
         else:
             new_texts.append(text)
 
-    root_text = new_texts[0]
     if merge:
+        root_text = new_texts[0]
         for text in new_texts[1:]:
             root_text.merge(text)
         new_texts = [root_text]
+
+    if tagset != '':
+        for text in new_texts:
+            text.map_tags(tagset)
 
     write_to_stdout_or_file(Parser.write(new_texts), output)
 
