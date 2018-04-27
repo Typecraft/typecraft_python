@@ -9,6 +9,6 @@ Sphinx==1.4.5
 cryptography==2.1.4
 PyYAML==3.11
 pytest==2.9.2
-six==1.10.0
+six==1.11.0
 enum34==1.1.6
 nltk==3.2.5
