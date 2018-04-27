@@ -25,6 +25,7 @@ def main():
 @click.option('--title', default='Automatically generated text from tpy')
 @click.option('--language', default='en')
 @click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
+@click.option('--tagset', type=str, default='')
 @click.option('-o', '--output', type=click.Path())
 def raw(
     input,
@@ -35,6 +36,7 @@ def raw(
     title,
     language,
     meta,
+    tagset,
     output
 ):
     # Perform input validation
@@ -78,8 +80,12 @@ def raw(
     text = Text(
         phrases=phrases,
         title=title,
-        metadata=dict(meta)
+        metadata=dict(meta),
+        language=language
     )
+
+    if tagset != '':
+        text.map_tags(tagset)
 
     write_to_stdout_or_file(Parser.write([text]), output)
 
@@ -94,6 +100,7 @@ def raw(
 @click.option('--title', default=None)
 @click.option('--override-language', default=None)
 @click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
+@click.option('--tagset', type=str, default="")
 @click.option('-o', '--output', type=click.Path())
 def xml(
     input,
@@ -105,6 +112,7 @@ def xml(
     title,
     override_language,
     meta,
+    tagset,
     output
 ):
     if split > 1 and merge:
@@ -115,13 +123,16 @@ def xml(
         texts.extend(Parser.parse(_input.read()))
     new_texts = []
     for text in texts:
+        if override_language:
+            text.language = override_language
+
         if tokenize:
             for phrase in text:
                 tokenize_phrase(phrase)
 
         if tag:
             _tagger = get_tagger_by_name(tagger)()
-            _tagger.tag_text(text, override_language or text.language)
+            _tagger.tag_text(text, text.language)
 
         if title:
             text.title = title
@@ -138,11 +149,15 @@ def xml(
         else:
             new_texts.append(text)
 
-    root_text = new_texts[0]
     if merge:
+        root_text = new_texts[0]
         for text in new_texts[1:]:
             root_text.merge(text)
         new_texts = [root_text]
+
+    if tagset != '':
+        for text in new_texts:
+            text.map_tags(tagset)
 
     write_to_stdout_or_file(Parser.write(new_texts), output)
 

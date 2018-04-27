@@ -2,12 +2,15 @@ import six
 from enum import Enum
 from yaml import dump
 
+from typecraft_python.parsing.mappings import get_pos_conversions, get_gloss_conversions
+from typecraft_python.core.interfaces import TypecraftModel
+
 """
 This file contains all models.
 """
 
 
-class Corpus:
+class Corpus(TypecraftModel):
     """
     The class representing a corpus files.
 
@@ -17,19 +20,37 @@ class Corpus:
     def __init__(self):
         self.texts = []
 
-    def __getitem__(self, item):
-        return self.texts[item]
+    def detokenize(self):
+        return "\n".join([text.detoknize for text in self.texts])
 
-    def __iter__(self):
-        return self.texts.__iter__()
+    def map_tags(self, tagset='tc'):
+        for text in self.texts:
+            text.detoknize(tagset)
+
+    def attributes(self):
+        return {}
+
+    def merge(self, other):
+        assert isinstance(other, Corpus)
+
+        self.texts.extend(other.texts)
 
     def to_dict(self):
         return {
             'texts': self.texts
         }
 
+    def __str__(self):
+        return "Corpus with %d texts" % (len(self.texts),)
 
-class Text:
+    def __getitem__(self, item):
+        return self.texts[item]
+
+    def __iter__(self):
+        return self.texts.__iter__()
+
+
+class Text(TypecraftModel):
     """
     The class representing a text-object.
 
@@ -156,6 +177,16 @@ class Text:
 
         return self
 
+    def detokenize(self):
+        if self.plain_text and self.plain_text != "":
+            return self.plain_text
+        else:
+            return "\n".join([phrase.detokenize() for phrase in self.phrases])
+
+    def map_tags(self, tagset='tc'):
+        for phrase in self.phrases:
+            phrase.map_tags(tagset)
+
     def attributes(self):
         """
         Return all non-children attributes of the text.
@@ -168,7 +199,7 @@ class Text:
             'language': self.language,
             'plain_text': self.plain_text,
             'rich_text': self.rich_text,
-            'metadata': self.metadata,
+            'metadata': self.metadata
         }
 
     def to_dict(self):
@@ -200,7 +231,7 @@ class PhraseValidity(Enum):
     EMPTY = 'EMPTY'
 
 
-class Phrase:
+class Phrase(TypecraftModel):
     """
     The class representing a phrase-object.
 
@@ -376,6 +407,32 @@ class Phrase:
         self.global_tags = []
         self.senses = []
 
+    def detokenize(self):
+        if self.phrase:
+            return self.phrase
+        else:
+            # Import detokenize here to avoid circular import
+            from typecraft_python.parsing.convenience import detokenize
+            return detokenize([word.word for word in self.words])
+
+    def map_tags(self, tagset='tc'):
+        for word in self.words:
+            word.map_tags(tagset)
+
+    def merge(self, other):
+        assert isinstance(other, Phrase)
+        # Merging phrases may or may not make sense.
+        # But if this method is called, we assume that the phrase should just be
+        # appended with a space in between. All other properties are merged
+        # in the way which seems most reasonable.
+        self.phrase = self.phrase + " " + other.phrase
+        self.translation = self.translation + " " + other.translation
+        self.translation2 = self.translation2 + " " + other.translation2
+        self.comment = self.comment + "\n" + other.comment
+        self.duration = self.duration + other.duration
+        self.senses.extend(other.senses)
+        self.words.extend(other.words)
+
     def attributes(self):
         """
         Gets all non-children attributes of the phrase.
@@ -413,7 +470,7 @@ class Phrase:
         return self.words.__iter__()
 
 
-class Word:
+class Word(TypecraftModel):
     """
     The class representing a Word.
 
@@ -509,6 +566,18 @@ class Word:
             'morphemes': list(map(lambda morpheme: morpheme.to_dict(), self.morphemes))
         }
 
+    def detokenize(self):
+        return self.word
+
+    def map_tags(self, tagset='tc'):
+        self.pos = get_pos_conversions(self.pos, tagset)
+        for morpheme in self.morphemes:
+            morpheme.map_tags(tagset)
+
+    def merge(self, other):
+        # Merging words does not seem to make sense
+        raise NotImplementedError("Merge not implemented for the Word model: Why would you want to merge two words?")
+
     def __getitem__(self, item):
         return self.morphemes[item]
 
@@ -525,7 +594,7 @@ class Word:
         return obj
 
 
-class Morpheme:
+class Morpheme(TypecraftModel):
     """
     The class representing a morpheme.
 
@@ -533,6 +602,12 @@ class Morpheme:
 
     It is comprised of a text-content and a set of glosses.
     """
+
+    def __getitem__(self, item):
+        pass
+
+    def __iter__(self):
+        pass
 
     def __init__(
         self,
@@ -629,6 +704,17 @@ class Morpheme:
         """
         self.clear_glosses()
 
+    def detokenize(self):
+        return self.morpheme
+
+    def map_tags(self, tagset='tc'):
+        return get_gloss_conversions(self.glosses)
+
+    def merge(self, other):
+        # Merging morphemes does not seem to make sense
+        raise NotImplementedError("Merge not implemented for the Morpheme model: "
+                                  "Why would you want to merge two morphemes?")
+
     def attributes(self):
         """
         Returns all non-children attributes of the morpheme.
@@ -652,7 +738,7 @@ class Morpheme:
         return dump(self.to_dict())
 
 
-class GlobalTagSet:
+class GlobalTagSet(object):
     """
     Class representing meta-information about a global tagset.
     """
@@ -665,7 +751,7 @@ class GlobalTagSet:
         self.name = name
 
 
-class GlobalTag:
+class GlobalTag(object):
     """
     Class representing a global tag.
     """

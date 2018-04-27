@@ -1,4 +1,79 @@
 
+class TypecraftModel(object):
+    """
+    This class is the prototype for most Typecraft models. It contains a number of common methods
+    every model _should_ implement, with some notable exceptions.
+    """
+
+    def detokenize(self):
+        """
+        Detokenizes the object into a raw text string.
+        :return:
+        """
+        raise NotImplementedError()
+
+    def map_tags(self, tagset='tc'):
+        """
+        Maps all tags in the object into the given tagset.
+
+        :param tagset:
+        :return:
+        """
+        raise NotImplementedError()
+
+    def attributes(self):
+        """
+        Returns all attributes (i.e. not nested children) of the object.
+
+        :return:
+        """
+        raise NotImplementedError()
+
+    def merge(self, other):
+        """
+        Merges another object of the same type into this object.
+
+        :param other:
+        :return:
+        """
+        raise NotImplementedError()
+
+    def to_dict(self):
+        """
+        Returns the full dict representation of this object,
+        including nested children and their dict representation.
+        :return:
+        """
+        raise NotImplementedError()
+
+    def __getitem__(self, item):
+        """
+        If the object is iterable (i.e. __iter__ is implemented), random index
+        lookups should also be possible, through this method.
+
+        This explicitly denies children contained in some form of generator.
+
+        :param item:
+        :return:
+        """
+        raise NotImplementedError()
+
+    def __str__(self):
+        """
+        Returns a human-readable string representation of this object.
+
+        :return:
+        """
+        raise NotImplementedError()
+
+    def __iter__(self):
+        """
+        Most of the models should be iterable, as most has children.
+
+        :return:
+        """
+        raise NotImplementedError()
+
 
 class TypecraftTagger(object):
     """
