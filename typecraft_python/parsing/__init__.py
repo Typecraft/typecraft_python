@@ -1,3 +1,4 @@
 
+__all__ = ['parser', 'convenience']
 
-__all__ = ['parser']
+from typecraft_python.parsing.parser import Parser

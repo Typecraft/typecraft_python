@@ -1,8 +1,7 @@
 # coding: utf-8
-import pytest
 import os
-from typecraft_python.parsing.parser import Parser
-from typecraft_python.models import Text, Phrase, Word, GlobalTag, PhraseValidity, Morpheme
+from typecraft_python.parsing import Parser
+from typecraft_python.core.models import Text, Phrase, Word, GlobalTag, PhraseValidity, Morpheme
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 

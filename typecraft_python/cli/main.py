@@ -5,7 +5,7 @@ import nltk
 
 from typecraft_python.cli.util import write_to_stdout_or_file
 from typecraft_python.parsing.parser import Parser
-from typecraft_python.models import Phrase, Text
+from typecraft_python.core.models import Phrase, Text
 from typecraft_python.integrations.nltk.tokenization import raw_phrase_to_tokenized_phrase, raw_text_to_phrases, \
     raw_text_to_tokenized_phrases, tokenize_phrase
 from typecraft_python.util import get_tagger_by_name, split as split_into_sublists
