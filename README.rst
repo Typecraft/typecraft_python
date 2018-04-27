@@ -41,18 +41,48 @@ Features
 Usage
 -----
 
-```
-Usage: tpy [OPTIONS] COMMAND [ARGS]...
+.. code-block:: console
 
-Options:
-  --help  Show this message and exit.
+    Usage: tpy [OPTIONS] COMMAND [ARGS]...
 
-Commands:
-  convert
-  ntexts   This command lists the number of texts in a...
-  raw
-  xml
-```
+    Options:
+      --help  Show this message and exit.
+
+    Commands:
+      convert
+      ntexts   This command lists the number of texts in a...
+      raw
+      xml
+
+
+Examples
+_____________
+
+Load a raw file, tokenize and tag it, and output xml (to stdout):
+
+.. code-block:: console
+
+    tpy raw your_file.txt
+
+To save to a file
+
+.. code-block:: console
+
+    tpy raw your_file.txt -o output.xml
+    # or
+    tpy raw your_file.txt > output.xml
+
+To tag using a specific tagger:
+
+.. code-block:: console
+
+    tpy raw your_file.txt --tagger=tree  # Tags using the tree tagger
+
+To load a Typecraft xml file and tag it:
+
+.. code-block:: console
+
+    tpy xml your_file.xml --tag --tagger=nltk -o tagged_output.xml
 
 
 Credits

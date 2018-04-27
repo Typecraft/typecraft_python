@@ -17,16 +17,16 @@ def main():
 
 
 @main.command()
+@click.option('--sent-tokenize/--no-sent-tokenize', default=True, help='Will sentence tokenize if true.')
+@click.option('--tokenize/--no-tokenize', default=True, help='Will tokenize if true.')
+@click.option('--tag/--no-tag', default=True, help='Will tag if true.')
+@click.option('--tagger', default='nltk', help='The tagger to use.')
+@click.option('--title', default='Automatically generated text from tpy', help='Title to attach to generated texts.')
+@click.option('--language', default='en', help='The language of the input text(s).')
+@click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True, help="Metadata to attach to generated text(s)")
+@click.option('--tagset', type=str, default='', help='If set, the tags in the output will be converted into this tagset.')
+@click.option('-o', '--output', type=click.Path(), help='If given, the output will be written to this file, instead of stdout.')
 @click.argument('input', type=click.File('r'), nargs=-1)
-@click.option('--sent-tokenize/--no-sent-tokenize', default=True)
-@click.option('--tokenize/--no-tokenize', default=True)
-@click.option('--tag/--no-tag', default=True)
-@click.option('--tagger', default='nltk')
-@click.option('--title', default='Automatically generated text from tpy')
-@click.option('--language', default='en')
-@click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
-@click.option('--tagset', type=str, default='')
-@click.option('-o', '--output', type=click.Path())
 def raw(
     input,
     sent_tokenize,
@@ -92,17 +92,17 @@ def raw(
 
 
 @main.command()
+@click.option('--tokenize/--no-tokenize', default=False, help='Will re-tokenize all phrases if true.')
+@click.option('--tag/--no-tag', default=False, help='Will tag if true.')
+@click.option('--tagger', default='nltk', help='The tagger to use.')
+@click.option('--split', default=1, type=int, help='If greater than 1, the output will be split into the given value number of texts.')
+@click.option('--merge/--no-merge', default=False, help='If true, will merge all files.')
+@click.option('--title', default=None, help='Title to attach to generated texts.')
+@click.option('--override-language', default=None, help='If set, will override the language used in all calculations and set the language for all texts.')
+@click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True, help="Metadata to attach to generated text(s)")
+@click.option('--tagset', type=str, default='', help='If set, the tags in the output will be converted into this tagset.')
+@click.option('-o', '--output', type=click.Path(), help='If given, the output will be written to this file, instead of stdout.')
 @click.argument('input', type=click.File('r'), nargs=-1)
-@click.option('--tokenize/--no-tokenize', default=True)
-@click.option('--tag/--no-tag', default=False)
-@click.option('--tagger', default='nltk')
-@click.option('--split', default=1, type=int)
-@click.option('--merge/--no-merge', default=False)
-@click.option('--title', default=None)
-@click.option('--override-language', default=None)
-@click.option('--meta', nargs=2, type=click.Tuple([str, str]), multiple=True)
-@click.option('--tagset', type=str, default="")
-@click.option('-o', '--output', type=click.Path())
 def xml(
     input,
     tokenize,
