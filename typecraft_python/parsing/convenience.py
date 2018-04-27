@@ -3,7 +3,7 @@ This file contains multiple convenience methods for different forms of parsing.
 """
 import six
 import string
-from typecraft_python.models import Phrase, Word, Morpheme
+from typecraft_python.core.models import Phrase, Word, Morpheme
 
 
 def detokenize(tokens):

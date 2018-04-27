@@ -1,9 +1,9 @@
 import xml.etree.ElementTree as ElementTree
 from xml.dom import minidom
 
-from typecraft_python.exceptions.parsing import TypecraftParseException
-from typecraft_python.models import Text, Phrase, Word, Morpheme, GlobalTagSet, GlobalTag, PhraseValidity
-from typecraft_python.globals import *
+from typecraft_python.core.exceptions import TypecraftParseException
+from typecraft_python.core.models import Text, Phrase, Word, Morpheme, GlobalTagSet, GlobalTag, PhraseValidity
+from typecraft_python.core.globals import *
 
 """
 The typecraft namespace
@@ -70,9 +70,6 @@ class _ParserHelper:
 
         if text_root.find(ns + 'titleTranslation') is None:
             raise TypecraftParseException("Element " + tag_text + " is missing field 'titleTranslation'")
-
-        if text_root.find(ns + 'extraMetadata') is None:
-            raise TypecraftParseException("Element " + tag_text + " is missing field 'extraMetadata'")
 
         return
 
@@ -155,14 +152,6 @@ class _ParserHelper:
         text.title = title
         text.title_translation = title_translation
 
-        metadata_tree = text_root.find(ns + 'extraMetadata')
-
-        for metadata in metadata_tree.findall(ns + 'metadata'):
-            key = metadata.attrib['name']
-            value = metadata.text
-
-            text.add_metadata(key, value)
-
         return
 
     @staticmethod
@@ -187,6 +176,15 @@ class _ParserHelper:
 
         if lang is not None:
             text.language = lang
+
+        metadata_tree = text_root.find(ns + 'extraMetadata')
+
+        if metadata_tree:
+            for metadata in metadata_tree.findall(ns + 'metadata'):
+                key = metadata.attrib['name']
+                value = metadata.text
+
+                text.add_metadata(key, value)
 
         return
 

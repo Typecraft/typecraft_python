@@ -1,6 +1,6 @@
 import pytest
 
-from typecraft_python.models import Phrase
+from typecraft_python.core.models import Phrase
 from typecraft_python.parsing.convenience import detokenize, parse_slash_separated_phrase, parse_bar_separated_phrase, \
     words_to_phrase, word_pos_tuples_to_phrase
 

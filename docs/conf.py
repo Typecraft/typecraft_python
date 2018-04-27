@@ -48,8 +48,12 @@ templates_path = ['_templates']
 # The suffix of source filenames.
 source_suffix = '.rst'
 
+charset_type = 'utf-8'
+
 # The encoding of source files.
-#source_encoding = 'utf-8-sig'
+# source_encoding = 'utf-8'
+
+html_output_encoding = 'utf-8'
 
 # The master toctree document.
 master_doc = 'index'

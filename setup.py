@@ -13,7 +13,9 @@ requirements = [
     "PYyaml",
     "enum34",
     "numpy",
-    "treetaggerwrapper"
+    "treetaggerwrapper",
+    "click",
+    "six"
 ]
 
 test_requirements = [
@@ -21,7 +23,7 @@ test_requirements = [
 
 setup(
     name='typecraft_python',
-    version='0.8.0',
+    version='0.9.0',
     description="Lightweight implementation of the Typecraft XML format in python.",
     long_description=readme + '\n\n' + history,
     author="Tormod Haugland",
@@ -30,6 +32,11 @@ setup(
     packages=find_packages(),
     package_dir={'typecraft_python':
                  'typecraft_python'},
+    entry_points={
+        'console_scripts': [
+            'tpy=typecraft_python.cli.main:main'
+        ]
+    },
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",

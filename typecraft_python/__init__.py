@@ -2,7 +2,7 @@
 
 __author__ = 'Tormod Haugland'
 __email__ = 'tormod.haugland@gmail.com'
-__version__ = '0.8.0'
+__version__ = '0.9.0'
 
 
-__all__ = ['globals', 'models', 'parsing', 'exceptions']
+__all__ = ['models', 'parsing', 'core', 'integrations']

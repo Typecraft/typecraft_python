@@ -1,7 +1,7 @@
 import pytest
 import six
 
-from typecraft_python.models import Text, Phrase, Word, Morpheme, PhraseValidity, GlobalTag, GlobalTagSet, \
+from typecraft_python.core.models import Text, Phrase, Word, Morpheme, PhraseValidity, GlobalTag, GlobalTagSet, \
     DEFAULT_TAGSET
 
 
