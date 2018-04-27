@@ -80,7 +80,8 @@ def raw(
     text = Text(
         phrases=phrases,
         title=title,
-        metadata=dict(meta)
+        metadata=dict(meta),
+        language=language
     )
 
     if tagset != '':
@@ -122,13 +123,16 @@ def xml(
         texts.extend(Parser.parse(_input.read()))
     new_texts = []
     for text in texts:
+        if override_language:
+            text.language = override_language
+
         if tokenize:
             for phrase in text:
                 tokenize_phrase(phrase)
 
         if tag:
             _tagger = get_tagger_by_name(tagger)()
-            _tagger.tag_text(text, override_language or text.language)
+            _tagger.tag_text(text, text.language)
 
         if title:
             text.title = title
