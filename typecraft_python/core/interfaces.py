@@ -90,7 +90,7 @@ class TypecraftTagger(object):
         """
         raise NotImplementedError()
 
-    def has_automatic_sentence_tokenization_support(self):
+    def has_automatic_sentence_tokenization_support(self, language='en'):
         """
         Returns true if the tagger is capable of automatically tokenizing sentences.
         from a raw text.
@@ -98,7 +98,7 @@ class TypecraftTagger(object):
         """
         raise NotImplementedError()
 
-    def has_automatic_word_tokenization_support(self):
+    def has_automatic_word_tokenization_support(self, language='en'):
         """
         Returns true if the tagger is capable of automatically tokenizing words.
         :return:

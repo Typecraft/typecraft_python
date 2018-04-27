@@ -8,9 +8,9 @@ import six
 # noinspection SpellCheckingInspection
 POS_CONVERSIONS = {
     "$": "PUN",
-    "$": "PUNC",
-    "$(": "PUNC",
-    "$.": "PUNC",
+    "$(": "PUN",
+    "$.": "PUN",
+    "$,": "PUN",
     ":": "PUN",
     "adj": "ADJ",
     "adja": "ADJ",

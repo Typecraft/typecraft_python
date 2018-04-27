@@ -51,19 +51,20 @@ def raw(
             _contents += "\n"
         contents += _contents
 
+    _tagger = None
     if tag:
         _tagger = get_tagger_by_name(tagger)()
 
-    if _tagger and _tagger.has_automatic_word_tokenization_support() and \
-       _tagger.has_automatic_sentence_tokenization_support():
+    if _tagger and _tagger.has_automatic_word_tokenization_support(language) and \
+       _tagger.has_automatic_sentence_tokenization_support(language):
         # The tagger has everything we need to get full tokenization
-        phrases = _tagger.tag_raw(contents)
-    elif _tagger and _tagger.has_automatic_word_tokenization_support():
+        phrases = _tagger.tag_raw(contents, language)
+    elif _tagger and _tagger.has_automatic_word_tokenization_support(language):
         # Sentence tokenize, then tag.
         phrases = nltk.sent_tokenize(contents, language)
         _phrases = []
         for phrase in phrases:
-            _phrases.extend(_tagger.tag_raw(phrase))
+            _phrases.extend(_tagger.tag_raw(phrase, language))
     else:
         if sent_tokenize and tokenize:
             phrases = raw_text_to_tokenized_phrases(contents)
