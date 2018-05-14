@@ -3,6 +3,7 @@ import copy
 import click
 import nltk
 
+from typecraft_python.parsing.parallell import parse_continuous_parallel_text_to_phrases
 from typecraft_python.cli.util import write_to_stdout_or_file
 from typecraft_python.parsing.parser import Parser
 from typecraft_python.core.models import Phrase, Text
@@ -180,6 +181,35 @@ def ntexts(
     """
     texts = Parser.parse(input.read())
     click.echo(len(texts))
+
+
+@main.command()
+@click.option('-f', '--format', type=str, default='continuous', help='The format of the parallel file.')
+@click.option('-n', '--num-langs', type=int, default=2, help='The number of languages present.')
+@click.option('-o', '--output', type=click.Path(), help='If given, the output will be written to this file, instead of stdout.')
+@click.argument('input', type=click.File('r'), nargs=-1)
+def par(
+    format,
+    num_langs,
+    output,
+    input
+):
+    """
+    The `par` command attempts to parse raw text as parallel corpora.
+
+    The input is one or more files containing raw text, in some parallel format.
+    """
+    contents = ""
+    for _input in input:
+        _contents = _input.read()
+        if _contents[-1] != "\n":
+            _contents += "\n"
+        contents += _contents
+
+    phrases = parse_continuous_parallel_text_to_phrases(contents, num_langs)
+    text = Text(title="Automatically generated parallel corpus", phrases=phrases)
+
+    write_to_stdout_or_file(Parser.write([text]), output)
 
 
 if __name__ == '__main__':
