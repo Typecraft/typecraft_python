@@ -483,7 +483,7 @@ class Word(TypecraftModel):
         ipa="",
         pos="",
         stem_morpheme=None,
-        morphemes=[]
+        morphemes=None
     ):
         """
         Default constructor.
@@ -492,8 +492,7 @@ class Word(TypecraftModel):
         self.ipa = ipa
         self.pos = pos
         self.stem_morpheme = stem_morpheme
-        self.morphemes = []
-        self.add_morphemes(morphemes)
+        self.morphemes = morphemes or []
 
     def add_morpheme(self, morpheme):
         """
