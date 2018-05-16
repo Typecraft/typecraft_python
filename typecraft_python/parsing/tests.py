@@ -1,5 +1,5 @@
 # coding: utf-8
-from parsing.parallell import parse_continuous_parallel_text_to_tuples, parse_continuous_parallel_text_to_phrases
+from typecraft_python.parsing.parallell import parse_continuous_parallel_text_to_tuples, parse_continuous_parallel_text_to_phrases
 
 
 class TestParseContinuousParallelTextToTuples(object):
