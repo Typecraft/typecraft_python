@@ -146,8 +146,8 @@ class _ParserHelper:
         :return:
         """
 
-        title = text_root.find(ns + 'title').text
-        title_translation = text_root.find(ns + 'titleTranslation').text
+        title = text_root.find(ns + 'title').text or ""
+        title_translation = text_root.find(ns + 'titleTranslation').text or ""
 
         text.title = title
         text.title_translation = title_translation
@@ -213,9 +213,9 @@ class _ParserHelper:
         :param phrase_root: An ElementTree representation of a Phrase
         :return:
         """
-        original = phrase_root.find(ns + 'original').text
+        original = phrase_root.find(ns + 'original').text or ""
 
-        phrase.phrase = original if original is not None else ""
+        phrase.phrase = original
         return
 
     @staticmethod
@@ -253,13 +253,16 @@ class _ParserHelper:
             phrase.translation2 = translation2_tree.text if translation2_tree.text is not None else ""
 
         if globaltags_tree is not None:
-            phrase.global_tag_set = GlobalTagSet(globaltags_tree.attrib.get('id'), globaltags_tree.attrib.get('tagset'))
+            phrase.global_tag_set = GlobalTagSet(
+                globaltags_tree.attrib.get('id') or 1,
+                globaltags_tree.attrib.get('tagset') or "DEFAULT"
+            )
 
             for global_tag in globaltags_tree.findall(ns + 'globaltag'):
                 phrase.add_global_tag(GlobalTag(name=global_tag.text, level=global_tag.attrib.get('level')))
 
         if description is not None:
-            phrase.comment = description.text if description is not None else ""
+            phrase.comment = description.text or ""
 
         return
 
@@ -287,8 +290,8 @@ class _ParserHelper:
         :return:
         """
 
-        word_text = word_root.attrib.get('text')
-        word.word = word_text if word_text is not None else ""
+        word_text = word_root.attrib.get('text') or ""
+        word.word = word_text
 
         return
 
@@ -313,7 +316,7 @@ class _ParserHelper:
             word.head = (head == 'true')
 
         if pos_tree is not None:
-            word.pos = pos_tree.text if pos_tree.text is not None else ""
+            word.pos = pos_tree.text or ""
 
         return
 
@@ -370,7 +373,7 @@ class _ParserHelper:
             morpheme.morpheme = morpheme_text
 
         for gloss in gloss_tree:
-            morpheme.add_gloss(gloss.text)
+            morpheme.add_gloss(gloss.text or "")
 
         return
 
