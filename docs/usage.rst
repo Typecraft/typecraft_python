@@ -7,15 +7,17 @@ The system can be used in two ways: As a CLI, and as a library.
 CLI
 ------
 
-The CLI currently has 3 active commands:
+The CLI currently has 4 active commands:
 
 * raw
 * xml
 * ntexts
+* par
 
 **raw** loads raw texts, and performs a number of operations on it. It will always convert the result to a TC-XML file.
 **xml** loads TC-xml files, and performs a number of operations on it.
 **ntexts** loads TC-xml files, and reports how many text-objects exist in the file.
+**par** parses parallel corpora.
 
 All file inputs in the commands accepts "-" as input, which specifies that the input should be read from stdin.
 The examples in :ref:`combined_examples` gives some examples of this.
@@ -205,6 +207,54 @@ Change language and set some metadata:
     $ tpy xml --override-language=nob \
         --meta Annotator "Tormod Haugland" \
         --meta "Content description" "This is some cool content"
+
+par
+___________________
+
+**par** will parse parallel corpora files. Currently there is only one supported format,
+named `continuous` or `linear`. The output is always Typecraft XML. This format requires there to
+to be `n` consecutive lines in the file, one per language, for each phrase that is to be translated.
+
+Note that the Typecraft XML format only supports two translation tiers.
+
+.. code-block:: console
+
+    Usage: tpy par [OPTIONS] [INPUT]...                                                                                                    │
+                                                                                                                                           │
+      The `par` command attempts to parse raw text as parallel corpora.                                                                    │
+                                                                                                                                           │
+      The input is one or more files containing raw text, in some parallel                                                                 │
+      format.                                                                                                                              │
+                                                                                                                                           │
+    Options:                                                                                                                               │
+      -f, --format TEXT        The format of the parallel file.                                                                            │
+      -n, --num-langs INTEGER  The number of languages present.                                                                            │
+      -o, --output PATH        If given, the output will be written to this file,                                                          │
+                               instead of stdout.                                                                                          │
+      --help                   Show this message and exit.
+
+Examples
+.......................
+
+Given the file `input.txt` with the contents below:
+
+.. code-block:: text
+
+    Hi this is a nice sentence.
+    Hei dette er en fin setning.
+    This is sentence number two.
+    Dette er setning nummber to.
+
+Which is a parallel corpus file with two languages (Norwegian and English).
+We can call the command
+
+.. code-block:: console
+
+    $ tpy par -n 2 input.txt
+
+The resulting output will be Typecraft XML with a single text with two phrases. The phrases will not
+be tokenized, with the appropriate amount of free translations tiers set.
+
 
 ntexts
 _________________
