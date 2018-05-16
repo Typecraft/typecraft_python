@@ -11,8 +11,6 @@ from typecraft_python.core.interfaces import TypecraftTagger
 # Try to load OBT by the use of the OBT_PATH
 # environment variable. Also verify that the
 # file tag-bm.sh file exists.
-from typecraft_python.util import batch
-
 FNULL = open(os.devnull, 'w')
 obt_available = False
 obt_path = os.environ.get('OBT_PATH')
@@ -56,6 +54,8 @@ class ObtTagger(TypecraftTagger):
         :param output:
         :return:
         """
+        # Import here the avoid circular dependency
+        from typecraft_python.util import batch
         phrases = []
         output_lines = output.split("\n")
         batched = batch(output_lines, 3)

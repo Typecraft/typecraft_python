@@ -1,4 +1,8 @@
-import os
+
+# Define these below batch to avoid circular dependency
+from typecraft_python.integrations.obt.tagger import ObtTagger
+from typecraft_python.integrations.nltk.tagger import NltkTagger
+from typecraft_python.integrations.treetagger import TreeTagger
 
 import six
 
@@ -7,12 +11,6 @@ def batch(iterable, n=1):
     length = len(iterable)
     for next_index in range(0, length, n):
         yield iterable[next_index:min(next_index + n, length)]
-
-
-# Define these below batch to avoid circular dependency
-from typecraft_python.integrations.obt.tagger import ObtTagger
-from typecraft_python.integrations.nltk.tagger import NltkTagger
-from typecraft_python.integrations.treetagger import TreeTagger
 
 
 # Taken from https://stackoverflow.com/questions/2130016/splitting-a-list-into-n-parts-of-approximately-equal-length
