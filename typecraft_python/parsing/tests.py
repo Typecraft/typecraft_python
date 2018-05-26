@@ -65,11 +65,11 @@ class TestParseContinuousParallelTextToPhrases(object):
         phrases = parse_continuous_parallel_text_to_phrases(raw_text, 2)
         assert len(phrases) == 2
 
-        assert phrases[0].phrase == "This is the first sentence."
-        assert phrases[0].translation == "Dette er den første setningen."
+        assert phrases[0].phrase == u"This is the first sentence."
+        assert phrases[0].translation == u"Dette er den første setningen."
 
-        assert phrases[1].phrase == "This is the second sentence."
-        assert phrases[1].translation == "Dette er den andre setningen."
+        assert phrases[1].phrase == u"This is the second sentence."
+        assert phrases[1].translation == u"Dette er den andre setningen."
 
     def test__three_langs__should_set_both_translation_fields(self):
         raw_text = u"""Sentence1 in lang1.

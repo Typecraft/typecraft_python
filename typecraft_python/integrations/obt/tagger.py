@@ -33,13 +33,13 @@ class ObtTagger(TypecraftTagger):
         fd, path = tempfile.mkstemp()
 
         with os.fdopen(fd, "w") as _file:
-            _file.write(raw_string.strip())
+            _file.write(raw_string.encode("utf-8").strip())
 
         return path
 
     @staticmethod
     def _call_obt(tempfile):
-        return check_output([os.path.join(obt_path, 'tag-bm.sh'), tempfile], stderr=FNULL).decode()
+        return check_output([os.path.join(obt_path, 'tag-bm.sh'), tempfile], stderr=FNULL).decode("utf-8")
 
     @staticmethod
     def _word_is_sentence_breaker(tags):

@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import pytest
 from treetaggerwrapper import TreeTaggerError
 from treetaggerwrapper import TreeTagger as _TreeTagger

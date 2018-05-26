@@ -1,13 +1,13 @@
+"""
+This file contains all models.
+"""
+
 import six
 from enum import Enum
 from yaml import dump
 
 from typecraft_python.parsing.mappings import get_pos_conversions, get_gloss_conversions
 from typecraft_python.core.interfaces import TypecraftModel
-
-"""
-This file contains all models.
-"""
 
 
 class Corpus(TypecraftModel):

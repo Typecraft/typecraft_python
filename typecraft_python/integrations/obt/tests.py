@@ -1,6 +1,11 @@
-from typecraft_python.integrations.obt.tagger import ObtTagger
+# coding: utf-8
+from __future__ import unicode_literals
+import pytest
+
+from typecraft_python.integrations.obt.tagger import ObtTagger, obt_available
 
 
+@pytest.mark.skipif(not obt_available, reason="Obt is not enabled.")
 class TestObtTagger(object):
 
     def test_parse_raw(self):
