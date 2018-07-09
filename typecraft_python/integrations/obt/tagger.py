@@ -32,7 +32,7 @@ class ObtTagger(TypecraftTagger):
     def _store_string_temporarily(raw_string):
         fd, path = tempfile.mkstemp()
 
-        with os.fdopen(fd, "w") as _file:
+        with os.fdopen(fd, "wb") as _file:
             _file.write(raw_string.encode("utf-8").strip())
 
         return path
