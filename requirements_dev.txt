@@ -11,4 +11,4 @@ PyYAML==3.12
 pytest==3.6.0
 six==1.11.0
 enum34==1.1.6
-nltk==3.3
+nltk==3.4
